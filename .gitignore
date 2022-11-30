@@ -38,3 +38,6 @@ out/
 
 ### MacOS ###
 .DS_Store
+
+### Build ###
+*.jar
