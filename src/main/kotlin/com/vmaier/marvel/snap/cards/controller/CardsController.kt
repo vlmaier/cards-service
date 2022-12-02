@@ -1,31 +1,48 @@
 package com.vmaier.marvel.snap.cards.controller
 
-import com.vmaier.marvel.snap.cards.dto.CardDto
-import com.vmaier.marvel.snap.cards.db.repo.CardRepository
-import com.vmaier.marvel.snap.cards.dto.CardConverter
-import org.springframework.stereotype.Controller
-import org.springframework.ui.Model
-import org.springframework.ui.set
+import com.vmaier.marvel.snap.cards.dto.CardResponse
+import com.vmaier.marvel.snap.cards.dto.CreateCardRequest
+import com.vmaier.marvel.snap.cards.service.CardsService
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
-import java.util.*
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RestController
 
-@Controller
-class CardsController(private val cardRepository: CardRepository) {
+@RestController
+@RequestMapping("/v1/cards", produces = ["application/json"])
+class CardsController constructor(private val cardsService: CardsService) {
 
-    @GetMapping("/", "/cards")
-    fun listCards(model: Model): String {
-        model["title"] = "Marvel SNAP cards"
-        model["cards"] = CardConverter.convertToDto(
-            cardRepository.findAll().toList()
-        ).sortedBy { card -> card.name }
-        return "cards"
+    @Operation(summary = "List all available cards", description = "TODO ...")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "OK")
+        ]
+    )
+    @ResponseBody
+    @GetMapping
+    fun listCards(): ResponseEntity<List<CardResponse>> {
+        val response = cardsService.getAllCards()
+        return ResponseEntity<List<CardResponse>>(response, HttpStatus.OK)
     }
 
-    @PostMapping("/cards")
-    fun addCard(@RequestBody cardDto: CardDto, model: Model) {
-        val card = CardConverter.convertToModel(cardDto)
-        cardRepository.save(card)
+    @Operation(summary = "Add new card", description = "TODO ...")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "201", description = "Created")
+        ]
+    )
+    @ResponseBody
+    @PostMapping(consumes = ["application/json"])
+    fun addCard(@RequestBody request: CreateCardRequest): ResponseEntity<CardResponse> {
+        // TODO: validation
+        val response = cardsService.addNewCard(request)
+        return ResponseEntity<CardResponse>(response, HttpStatus.CREATED)
     }
 }
