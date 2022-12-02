@@ -6,6 +6,11 @@ import io.swagger.v3.oas.annotations.media.Schema
 data class CardResponse(
 
     @field:Schema(
+        description = "Unique card identifier"
+    )
+    val id: Int,
+
+    @field:Schema(
         description = "Name of the character"
     )
     val name: String,

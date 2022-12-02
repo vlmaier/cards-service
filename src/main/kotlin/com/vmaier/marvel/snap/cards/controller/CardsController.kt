@@ -1,48 +1,36 @@
 package com.vmaier.marvel.snap.cards.controller
 
-import com.vmaier.marvel.snap.cards.dto.CardResponse
 import com.vmaier.marvel.snap.cards.dto.CreateCardRequest
 import com.vmaier.marvel.snap.cards.service.CardsService
-import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.responses.ApiResponse
-import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
+import org.springframework.web.bind.annotation.*
 
-@RestController
-@RequestMapping("/v1/cards", produces = ["application/json"])
+
+@Controller
 class CardsController constructor(private val cardsService: CardsService) {
 
-    @Operation(summary = "List all available cards", description = "TODO ...")
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "OK")
-        ]
-    )
-    @ResponseBody
-    @GetMapping
-    fun listCards(): ResponseEntity<List<CardResponse>> {
-        val response = cardsService.getAllCards()
-        return ResponseEntity<List<CardResponse>>(response, HttpStatus.OK)
+    @GetMapping("cards")
+    fun listCards(model: Model): String {
+        model.addAttribute("cards", cardsService.getAllCards())
+        return "cards"
     }
 
-    @Operation(summary = "Add new card", description = "TODO ...")
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "201", description = "Created")
-        ]
-    )
-    @ResponseBody
-    @PostMapping(consumes = ["application/json"])
-    fun addCard(@RequestBody request: CreateCardRequest): ResponseEntity<CardResponse> {
-        // TODO: validation
-        val response = cardsService.addNewCard(request)
-        return ResponseEntity<CardResponse>(response, HttpStatus.CREATED)
+    @GetMapping("cards/{cardId}")
+    fun findCard(@PathVariable("cardId") cardId: Int, model: Model): String {
+        model.addAttribute("card", cardsService.getOneCard(cardId))
+        return "card"
+    }
+
+    @GetMapping("new-card")
+    fun getCreateCardPage(model: Model): String {
+        model.addAttribute("request", CreateCardRequest())
+        return "new-card"
+    }
+
+    @PostMapping("new-card")
+    fun addCard(request: CreateCardRequest, model: Model): String {
+        val newCard = cardsService.addNewCard(request)
+        return "redirect:/cards/" + newCard.id
     }
 }

@@ -8,23 +8,21 @@ data class CreateCardRequest(
     @field:Schema(
         description = "Name of the character"
     )
-    val name: String,
+    val name: String? = null,
 
     @field:Schema(
-        description = "Amount of energy needs to be used for playing this card",
-        minimum = "0",
-        maximum = "6"
+        description = "Amount of energy needs to be used for playing this card"
     )
-    val energy: Int,
+    val energy: Int? = null,
 
     @field:Schema(
         description = "Default amount of power of the card"
     )
-    val power: Int,
+    val power: Int? = null,
 
     @field:Schema(
         description = "Description of the ability the character of the card has"
     )
-    val ability: String
+    val ability: String? = null
 
 )
