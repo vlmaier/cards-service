@@ -43,7 +43,8 @@ class CardsApiController constructor(private val cardsService: CardsService) {
     @ResponseBody
     @GetMapping("{cardId}")
     fun findCard(@PathVariable("cardId") cardId: Int): ResponseEntity<CardResponse> {
-        val response = cardsService.getOneCard(cardId)
+        val card = cardsService.getOneCard(cardId)
+        val response = CardConverter.convertToDto(card)
         return ResponseEntity<CardResponse>(response, HttpStatus.OK)
     }
 
@@ -60,7 +61,8 @@ class CardsApiController constructor(private val cardsService: CardsService) {
         assert(request.cost != null)
         assert(request.power != null)
         assert(request.ability != null)
-        val response = cardsService.addNewCard(request)
+        val newCard = cardsService.addNewCard(request)
+        val response = CardConverter.convertToDto(newCard)
         return ResponseEntity<CardResponse>(response, HttpStatus.CREATED)
     }
 }

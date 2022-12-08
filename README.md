@@ -3,9 +3,9 @@
 ## 🚧 Work in progress ... 🚧
 
 ### To Do's:
-- mapstruct
-- flyway
-- paging
-- async upload
+- use mapstruct
+- use flyway
+- implement async upload
 - outsource s3 configuration
-- input validation
+- add input validation
+- add "no cards available yet" placeholder

@@ -12,7 +12,8 @@
 </head>
 <body>
 <h1 class="mx-4 my-4">All cards</h1>
-<a class="ms-4 mb-2 btn btn-outline-secondary" href="/">Back</a>
+<a class="ms-4 mb-2 btn btn-outline-primary" href="/">Back</a>
+<a class="ms-1 mb-2 btn btn-primary" href="new-card">Add new card</a>
 <div class="table-responsive-lg">
     <table class="mx-3 table table-hover align-middle">
         <thead>
@@ -27,7 +28,7 @@
         <tbody>
         <tr th:each="card: ${cardPage.content}" style="cursor: pointer" th:onclick="'javascript:rowClicked(\'' + ${card.id} + '\');'">
             <td>
-                <img class="img-thumbnail" style="width: 100px" th:src="@{${card.url}}"/>
+                <img class="img-fluid" style="width: 100px" th:src="@{${card.url}}"/>
             </td>
             <td th:text="${card.name}"/>
             <td th:text="${card.cost}"/>
@@ -36,13 +37,30 @@
         </tr>
         </tbody>
     </table>
-    <ul class="pagination justify-content-center"
-         th:each="pageNumber : ${pageNumbers}">
-        <a class="page-link"
-           th:href="@{/cards(size=${cardPage.size}, page=${pageNumber})}"
-           th:text="${pageNumber}"
-           th:classappend="${pageNumber==cardPage.number + 1} ? active"/>
-    </ul>
 </div>
+
+<nav th:if="${cardPage.totalPages gt 0}">
+    <ul class="pagination justify-content-center fw-bold">
+        <li class="page-item" th:classappend="${cardPage.number eq 0} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{/cards(size=${cardPage.size}, page=${cardPage.number lt 2 ? 1 : cardPage.number})}"
+               title="Previous Page">
+                <span>&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item" th:classappend="${i eq cardPage.number + 1} ? 'active'"
+            th:each="i : ${#numbers.sequence( 1, cardPage.totalPages, 1)}">
+            <a class="page-link" th:href="@{/cards(size=${cardPage.size}, page=${i})}" th:text="${i}"
+               th:title="${'Page ' + i}"></a>
+        </li>
+        <li class="page-item" th:classappend="${cardPage.number + 1 eq cardPage.totalPages} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{/cards(size=${cardPage.size}, page=${cardPage.number + 2})}"
+               title="Next Page">
+                <span>&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
 </body>
 </html>

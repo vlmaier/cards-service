@@ -8,7 +8,7 @@ data class Card(
     val name: String,
     val cost: Int,
     val power: Int,
-    val ability: String,
+    val ability: String? = null,
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int? = null,

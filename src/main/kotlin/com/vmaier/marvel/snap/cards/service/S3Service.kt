@@ -48,7 +48,7 @@ class S3Service {
     }
 
     private fun generateFileName(file: MultipartFile): String {
-        return "" + Date().time + "-" + file.originalFilename!!.replace(" ", "_")
+        return "" + Date().time + "-" + file.originalFilename!!.replace(" ", "-")
     }
 
     private fun convertMultiPartToFile(file: MultipartFile): File {

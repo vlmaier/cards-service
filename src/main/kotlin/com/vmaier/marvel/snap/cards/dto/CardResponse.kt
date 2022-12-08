@@ -16,9 +16,9 @@ data class CardResponse(
     val name: String,
 
     @field:Schema(
-        description = "Amount of energy needs to be used for playing this card"
+        description = "Amount of energy cost for playing this card"
     )
-    val energy: Int,
+    val cost: Int,
 
     @field:Schema(
         description = "Default amount of power of the card"

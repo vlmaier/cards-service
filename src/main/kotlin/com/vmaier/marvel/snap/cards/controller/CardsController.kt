@@ -7,8 +7,6 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 import java.util.*
-import java.util.stream.Collectors
-import java.util.stream.IntStream
 
 @Controller
 class CardsController constructor(private val cardsService: CardsService) {
@@ -19,16 +17,9 @@ class CardsController constructor(private val cardsService: CardsService) {
                   @RequestParam("size") size: Optional<Int>
     ): String {
         val currentPage = page.orElse(1)
-        val pageSize = size.orElse(10)
+        val pageSize = size.orElse(5)
         val cardPage = cardsService.getAllCards(PageRequest.of(currentPage - 1, pageSize))
         model.addAttribute("cardPage", cardPage)
-        val totalPages = cardPage.totalPages
-        if (totalPages > 0) {
-            val pageNumbers = IntStream.rangeClosed(1, totalPages)
-                .boxed()
-                .collect(Collectors.toList())
-            model.addAttribute("pageNumbers", pageNumbers)
-        }
         return "cards"
     }
 
