@@ -1,11 +1,15 @@
 package com.vmaier.marvel.snap.cards.controller.api
 
+import com.vmaier.marvel.snap.cards.dto.CardConverter
 import com.vmaier.marvel.snap.cards.dto.CardResponse
 import com.vmaier.marvel.snap.cards.dto.CreateCardRequest
 import com.vmaier.marvel.snap.cards.service.CardsService
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import org.springdoc.core.converters.models.PageableAsQueryParam
+import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -22,9 +26,11 @@ class CardsApiController constructor(private val cardsService: CardsService) {
         ]
     )
     @ResponseBody
+    @PageableAsQueryParam
     @GetMapping
-    fun listCards(): ResponseEntity<List<CardResponse>> {
-        val response = cardsService.getAllCards()
+    fun listCards(@Parameter(hidden = true) page: Pageable): ResponseEntity<List<CardResponse>> {
+        val cardPage = cardsService.getAllCards(page)
+        val response = CardConverter.convertToDto(cardPage.toList())
         return ResponseEntity<List<CardResponse>>(response, HttpStatus.OK)
     }
 

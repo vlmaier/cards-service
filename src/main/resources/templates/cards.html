@@ -25,7 +25,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="card: ${cards}" style="cursor: pointer" th:onclick="'javascript:rowClicked(\'' + ${card.id} + '\');'">
+        <tr th:each="card: ${cardPage.content}" style="cursor: pointer" th:onclick="'javascript:rowClicked(\'' + ${card.id} + '\');'">
             <td>
                 <img class="img-thumbnail" style="width: 100px" th:src="@{${card.url}}"/>
             </td>
@@ -36,6 +36,13 @@
         </tr>
         </tbody>
     </table>
+    <ul class="pagination justify-content-center"
+         th:each="pageNumber : ${pageNumbers}">
+        <a class="page-link"
+           th:href="@{/cards(size=${cardPage.size}, page=${pageNumber})}"
+           th:text="${pageNumber}"
+           th:classappend="${pageNumber==cardPage.number + 1} ? active"/>
+    </ul>
 </div>
 </body>
 </html>
