@@ -28,7 +28,7 @@ data class CardResponse(
     @field:Schema(
         description = "Description of the ability the character of the card has"
     )
-    val ability: String,
+    val ability: String?,
 
     @field:Schema(
         description = "Image URL"
