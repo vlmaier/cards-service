@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 
-
 @Controller
 class CardsController constructor(private val cardsService: CardsService) {
 
@@ -30,6 +29,7 @@ class CardsController constructor(private val cardsService: CardsService) {
 
     @PostMapping("new-card")
     fun addCard(request: CreateCardRequest, model: Model): String {
+        // TODO: input validation
         val newCard = cardsService.addNewCard(request)
         return "redirect:/cards/" + newCard.id
     }

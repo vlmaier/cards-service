@@ -11,4 +11,5 @@ data class Card(
     val ability: String,
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int? = null)
+    val id: Int? = null,
+    val url: String? = null)

@@ -5,3 +5,7 @@
 ### To Do's:
 - mapstruct
 - flyway
+- paging
+- async upload
+- outsource s3 configuration
+- input validation
