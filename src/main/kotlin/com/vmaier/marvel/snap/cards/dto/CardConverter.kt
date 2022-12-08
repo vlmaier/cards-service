@@ -6,7 +6,7 @@ import java.util.stream.Collectors
 object CardConverter {
 
     fun convertToDto(card: Card): CardResponse {
-        return CardResponse(card.id!!, card.name, card.energy, card.power, card.ability, card.url)
+        return CardResponse(card.id!!, card.name, card.cost, card.power, card.ability, card.url)
     }
 
     fun convertToDto(cards: List<Card>): List<CardResponse> {
@@ -16,6 +16,6 @@ object CardConverter {
     }
 
     fun convertToModel(request: CreateCardRequest): Card {
-        return Card(request.name!!, request.energy!!, request.power!!, request.ability!!)
+        return Card(request.name!!, request.cost!!, request.power!!, request.ability!!)
     }
 }

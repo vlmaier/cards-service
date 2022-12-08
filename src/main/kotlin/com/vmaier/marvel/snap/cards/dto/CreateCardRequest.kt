@@ -12,9 +12,9 @@ data class CreateCardRequest(
     val name: String? = null,
 
     @field:Schema(
-        description = "Amount of energy needs to be used for playing this card"
+        description = "Amount of energy cost for playing this card"
     )
-    val energy: Int? = null,
+    val cost: Int? = null,
 
     @field:Schema(
         description = "Default amount of power of the card"

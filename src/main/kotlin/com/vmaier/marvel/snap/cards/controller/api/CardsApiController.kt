@@ -57,7 +57,7 @@ class CardsApiController constructor(private val cardsService: CardsService) {
     @PostMapping(consumes = ["application/json"])
     fun addCard(@RequestBody request: CreateCardRequest): ResponseEntity<CardResponse> {
         assert(request.name != null)
-        assert(request.energy != null)
+        assert(request.cost != null)
         assert(request.power != null)
         assert(request.ability != null)
         val response = cardsService.addNewCard(request)

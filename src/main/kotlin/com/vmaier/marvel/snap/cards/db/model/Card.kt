@@ -6,7 +6,7 @@ import jakarta.persistence.*
 @Entity
 data class Card(
     val name: String,
-    val energy: Int,
+    val cost: Int,
     val power: Int,
     val ability: String,
     @Id

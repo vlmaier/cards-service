@@ -19,7 +19,7 @@
         <tr>
             <th scope="col"></th>
             <th scope="col">Name</th>
-            <th scope="col">Energy</th>
+            <th scope="col">Cost</th>
             <th scope="col">Power</th>
             <th scope="col">Ability</th>
         </tr>
@@ -30,7 +30,7 @@
                 <img class="img-thumbnail" style="width: 100px" th:src="@{${card.url}}"/>
             </td>
             <td th:text="${card.name}"/>
-            <td th:text="${card.energy}"/>
+            <td th:text="${card.cost}"/>
             <td th:text="${card.power}"/>
             <td th:text="${card.ability}"/>
         </tr>
