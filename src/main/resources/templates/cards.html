@@ -13,23 +13,29 @@
 <body>
 <h1 class="mx-4 my-4">All cards</h1>
 <a class="ms-4 mb-2 btn btn-outline-secondary" href="/">Back</a>
-<table class="mx-3 table table-hover">
-    <thead>
-    <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Energy</th>
-        <th scope="col">Power</th>
-        <th scope="col">Ability</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="card: ${cards}" style="cursor: pointer" th:onclick="'javascript:rowClicked(\'' + ${card.id} + '\');'">
-        <td th:text="${card.name}"/>
-        <td th:text="${card.energy}"/>
-        <td th:text="${card.power}"/>
-        <td th:text="${card.ability}"/>
-    </tr>
-    </tbody>
-</table>
+<div class="table-responsive-lg">
+    <table class="mx-3 table table-hover align-middle">
+        <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Name</th>
+            <th scope="col">Energy</th>
+            <th scope="col">Power</th>
+            <th scope="col">Ability</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="card: ${cards}" style="cursor: pointer" th:onclick="'javascript:rowClicked(\'' + ${card.id} + '\');'">
+            <td>
+                <img class="img-thumbnail" style="width: 100px" th:src="@{${card.url}}"/>
+            </td>
+            <td th:text="${card.name}"/>
+            <td th:text="${card.energy}"/>
+            <td th:text="${card.power}"/>
+            <td th:text="${card.ability}"/>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
