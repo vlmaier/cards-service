@@ -1,6 +1,6 @@
 package com.vmaier.marvel.snap.cards.controller
 
-import com.vmaier.marvel.snap.cards.dto.CreateCardRequest
+import com.vmaier.marvel.snap.cards.dto.CreateCardDTO
 import com.vmaier.marvel.snap.cards.service.CardsService
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Controller
@@ -31,12 +31,12 @@ class CardsController constructor(private val cardsService: CardsService) {
 
     @GetMapping("new-card")
     fun getCreateCard(model: Model): String {
-        model.addAttribute("request", CreateCardRequest())
+        model.addAttribute("request", CreateCardDTO())
         return "new-card"
     }
 
     @PostMapping("new-card")
-    fun addCard(request: CreateCardRequest, model: Model): String {
+    fun addCard(request: CreateCardDTO, model: Model): String {
         // TODO: input validation
         val newCard = cardsService.addNewCard(request)
         return "redirect:/cards/" + newCard.id

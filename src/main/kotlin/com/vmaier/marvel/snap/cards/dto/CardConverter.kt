@@ -1,21 +1,27 @@
 package com.vmaier.marvel.snap.cards.dto
 
-import com.vmaier.marvel.snap.cards.db.model.Card
+import com.vmaier.marvel.snap.cards.db.dao.Card
+import com.vmaier.marvel.snap.cards.openapi.CardResponse
+import com.vmaier.marvel.snap.cards.openapi.CreateCardRequest
 import java.util.stream.Collectors
 
 object CardConverter {
 
-    fun convertToDto(card: Card): CardResponse {
+    fun convertToModel(card: Card): CardResponse {
         return CardResponse(card.id!!, card.name, card.cost, card.power, card.ability, card.url)
     }
 
-    fun convertToDto(cards: List<Card>): List<CardResponse> {
+    fun convertToModel(cards: List<Card>): List<CardResponse> {
         return cards.stream()
-            .map { card -> convertToDto(card) }
+            .map { card -> convertToModel(card) }
             .collect(Collectors.toList())
     }
 
-    fun convertToModel(request: CreateCardRequest): Card {
+    fun convertToDao(request: CreateCardDTO): Card {
         return Card(request.name!!, request.cost!!, request.power!!, request.ability!!)
+    }
+
+    fun convertToDao(request: CreateCardRequest): Card {
+        return Card(request.name, request.cost, request.power, request.ability, request.imageUrl)
     }
 }

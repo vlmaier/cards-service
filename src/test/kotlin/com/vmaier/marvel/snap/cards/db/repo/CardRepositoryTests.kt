@@ -1,6 +1,6 @@
 package com.vmaier.marvel.snap.cards.db.repo
 
-import com.vmaier.marvel.snap.cards.db.model.Card
+import com.vmaier.marvel.snap.cards.db.dao.Card
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

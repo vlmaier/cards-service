@@ -1,8 +1,8 @@
 package com.vmaier.marvel.snap.cards.controller.api
 
 import com.vmaier.marvel.snap.cards.dto.CardConverter
-import com.vmaier.marvel.snap.cards.dto.CardResponse
-import com.vmaier.marvel.snap.cards.dto.CreateCardRequest
+import com.vmaier.marvel.snap.cards.openapi.CardResponse
+import com.vmaier.marvel.snap.cards.openapi.CreateCardRequest
 import com.vmaier.marvel.snap.cards.service.CardsService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -30,7 +30,7 @@ class CardsApiController constructor(private val cardsService: CardsService) {
     @GetMapping
     fun listCards(@Parameter(hidden = true) page: Pageable): ResponseEntity<List<CardResponse>> {
         val cardPage = cardsService.getAllCards(page)
-        val response = CardConverter.convertToDto(cardPage.toList())
+        val response = CardConverter.convertToModel(cardPage.toList())
         return ResponseEntity<List<CardResponse>>(response, HttpStatus.OK)
     }
 
@@ -44,7 +44,7 @@ class CardsApiController constructor(private val cardsService: CardsService) {
     @GetMapping("{cardId}")
     fun findCard(@PathVariable("cardId") cardId: Int): ResponseEntity<CardResponse> {
         val card = cardsService.getOneCard(cardId)
-        val response = CardConverter.convertToDto(card)
+        val response = CardConverter.convertToModel(card)
         return ResponseEntity<CardResponse>(response, HttpStatus.OK)
     }
 
@@ -57,12 +57,8 @@ class CardsApiController constructor(private val cardsService: CardsService) {
     @ResponseBody
     @PostMapping(consumes = ["application/json"])
     fun addCard(@RequestBody request: CreateCardRequest): ResponseEntity<CardResponse> {
-        assert(request.name != null)
-        assert(request.cost != null)
-        assert(request.power != null)
-        assert(request.ability != null)
         val newCard = cardsService.addNewCard(request)
-        val response = CardConverter.convertToDto(newCard)
+        val response = CardConverter.convertToModel(newCard)
         return ResponseEntity<CardResponse>(response, HttpStatus.CREATED)
     }
 }

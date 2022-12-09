@@ -1,6 +1,6 @@
 package com.vmaier.marvel.snap.cards.db.repo
 
-import com.vmaier.marvel.snap.cards.db.model.Card
+import com.vmaier.marvel.snap.cards.db.dao.Card
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Modifying

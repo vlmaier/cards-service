@@ -1,9 +1,10 @@
 package com.vmaier.marvel.snap.cards.service
 
-import com.vmaier.marvel.snap.cards.db.model.Card
+import com.vmaier.marvel.snap.cards.db.dao.Card
 import com.vmaier.marvel.snap.cards.db.repo.CardRepository
 import com.vmaier.marvel.snap.cards.dto.CardConverter
-import com.vmaier.marvel.snap.cards.dto.CreateCardRequest
+import com.vmaier.marvel.snap.cards.dto.CreateCardDTO
+import com.vmaier.marvel.snap.cards.openapi.CreateCardRequest
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -26,8 +27,8 @@ class CardsService constructor(
     }
 
     @Transactional
-    fun addNewCard(request: CreateCardRequest): Card {
-        var card = CardConverter.convertToModel(request)
+    fun addNewCard(request: CreateCardDTO): Card {
+        var card = CardConverter.convertToDao(request)
         card = cardRepository.save(card)
         if (request.image != null) {
             // TODO: async
@@ -35,5 +36,16 @@ class CardsService constructor(
             cardRepository.updateImageUrl(card.id!!, url)
         }
         return getOneCard(card.id!!)
+    }
+
+    @Transactional
+    fun addNewCard(request: CreateCardRequest): Card {
+        val card = CardConverter.convertToDao(request)
+        return cardRepository.save(card)
+    }
+
+    @Transactional
+    fun removeAllCards() {
+        cardRepository.deleteAll()
     }
 }

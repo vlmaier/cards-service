@@ -1,4 +1,4 @@
-package com.vmaier.marvel.snap.cards.db.model
+package com.vmaier.marvel.snap.cards.db.dao
 
 import jakarta.persistence.*
 
@@ -9,7 +9,7 @@ data class Card(
     val cost: Int,
     val power: Int,
     val ability: String? = null,
+    val url: String? = null,
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int? = null,
-    val url: String? = null)
+    val id: Int? = null,)
