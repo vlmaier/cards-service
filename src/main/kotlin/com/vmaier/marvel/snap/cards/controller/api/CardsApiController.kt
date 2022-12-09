@@ -61,4 +61,16 @@ class CardsApiController constructor(private val cardsService: CardsService) {
         val response = CardConverter.convertToModel(newCard)
         return ResponseEntity<CardResponse>(response, HttpStatus.CREATED)
     }
+
+    @Operation(summary = "Remove all cards", description = "TODO ...")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "204", description = "No Content")
+        ]
+    )
+    @DeleteMapping
+    fun removeCards(): ResponseEntity<Void> {
+        cardsService.removeAllCards()
+        return ResponseEntity(HttpStatus.NO_CONTENT)
+    }
 }

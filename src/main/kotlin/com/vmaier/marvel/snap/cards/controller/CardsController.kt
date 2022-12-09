@@ -41,4 +41,10 @@ class CardsController constructor(private val cardsService: CardsService) {
         val newCard = cardsService.addNewCard(request)
         return "redirect:/cards/" + newCard.id
     }
+
+    @DeleteMapping("cards")
+    fun removeCards(model: Model): String {
+        cardsService.removeAllCards()
+        return "redirect:/cards"
+    }
 }

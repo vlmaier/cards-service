@@ -13,7 +13,10 @@
 <body>
 <h1 class="mx-4 my-4">All cards</h1>
 <a class="ms-4 mb-2 btn btn-outline-primary" href="/">Back</a>
-<a class="ms-1 mb-2 btn btn-primary" href="new-card">Add new card</a>
+<a class="ms-1 mb-2 btn btn-primary" href="new-card">Add card</a>
+<form class="d-inline" th:action="@{/cards}" th:method="DELETE">
+    <button class="ms-1 mb-2 btn btn-danger" type="submit">Delete all</button>
+</form>
 <div class="table-responsive-lg">
     <table class="mx-3 table table-hover align-middle">
         <thead>
@@ -49,7 +52,7 @@
             </a>
         </li>
         <li class="page-item" th:classappend="${i eq cardPage.number + 1} ? 'active'"
-            th:each="i : ${#numbers.sequence( 1, cardPage.totalPages, 1)}">
+            th:each="i : ${#numbers.sequence(1, cardPage.totalPages)}">
             <a class="page-link" th:href="@{/cards(size=${cardPage.size}, page=${i})}" th:text="${i}"
                th:title="${'Page ' + i}"></a>
         </li>
@@ -62,5 +65,6 @@
         </li>
     </ul>
 </nav>
+
 </body>
 </html>
