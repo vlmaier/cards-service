@@ -1,5 +1,6 @@
 package com.vmaier.marvel.snap.cards.controller
 
+import com.vmaier.marvel.snap.cards.Constants
 import com.vmaier.marvel.snap.cards.dto.CreateCardDTO
 import com.vmaier.marvel.snap.cards.service.CardsService
 import org.springframework.data.domain.PageRequest
@@ -17,7 +18,7 @@ class CardsController constructor(private val cardsService: CardsService) {
                   @RequestParam("size") size: Optional<Int>
     ): String {
         val currentPage = page.orElse(1)
-        val pageSize = size.orElse(5)
+        val pageSize = size.orElse(Constants.PAGE_SIZE)
         val cardPage = cardsService.getAllCards(PageRequest.of(currentPage - 1, pageSize))
         model.addAttribute("cardPage", cardPage)
         return "cards"

@@ -51,10 +51,28 @@
                 <span>&laquo;</span>
             </a>
         </li>
+        <li class="page-item" th:if="${cardPage.number gt cardPage.size - 1}">
+            <a class="page-link" th:href="@{/cards(size=${cardPage.size}, page=1)}" th:text="1"
+               th:title="${'Page ' + cardPage.number}"></a>
+        </li>
+        <li class="page-item" th:if="${cardPage.number gt cardPage.size - 1}">
+            <a class="page-link disabled">
+                <span>...</span>
+            </a>
+        </li>
         <li class="page-item" th:classappend="${i eq cardPage.number + 1} ? 'active'"
-            th:each="i : ${#numbers.sequence(1, cardPage.totalPages)}">
+            th:each="i : ${#numbers.sequence(T(java.lang.Math).min(cardPage.number + 1, cardPage.totalPages - (cardPage.size - 1)), T(java.lang.Math).min(cardPage.number + cardPage.size, cardPage.totalPages), 1)}">
             <a class="page-link" th:href="@{/cards(size=${cardPage.size}, page=${i})}" th:text="${i}"
                th:title="${'Page ' + i}"></a>
+        </li>
+        <li class="page-item" th:if="${cardPage.totalPages gt T(java.lang.Math).min(cardPage.number + cardPage.size, cardPage.totalPages)}">
+            <a class="page-link disabled">
+                <span>...</span>
+            </a>
+        </li>
+        <li class="page-item" th:if="${cardPage.totalPages gt T(java.lang.Math).min(cardPage.number + cardPage.size, cardPage.totalPages)}">
+            <a class="page-link" th:href="@{/cards(size=${cardPage.size}, page=${cardPage.totalPages})}" th:text="${cardPage.totalPages}"
+               th:title="${'Page ' + cardPage.number}"></a>
         </li>
         <li class="page-item" th:classappend="${cardPage.number + 1 eq cardPage.totalPages} ? 'disabled'">
             <a class="page-link"
