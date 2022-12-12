@@ -15,7 +15,7 @@ class CardsServiceAppTests(@Autowired val restTemplate: TestRestTemplate) {
     fun `Assert landing page loads`() {
         val entity = restTemplate.getForEntity<String>("/")
         assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(entity.body).contains("<h1>Marvel SNAP cards</h1>")
+        assertThat(entity.body).contains("<title>Marvel SNAP cards</title>")
     }
 
 }
