@@ -1,8 +1,8 @@
 package com.vmaier.marvel.snap.cards.dto
 
 import com.vmaier.marvel.snap.cards.db.dao.Card
-import com.vmaier.marvel.snap.cards.openapi.CardResponse
-import com.vmaier.marvel.snap.cards.openapi.CreateCardRequest
+import com.vmaier.marvel.snap.cards.openapi.model.CardResponse
+import com.vmaier.marvel.snap.cards.openapi.model.CreateCardRequest
 import java.util.stream.Collectors
 
 object CardConverter {

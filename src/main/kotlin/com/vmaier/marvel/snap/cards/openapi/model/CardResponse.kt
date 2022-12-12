@@ -1,4 +1,4 @@
-package com.vmaier.marvel.snap.cards.openapi
+package com.vmaier.marvel.snap.cards.openapi.model
 
 import io.swagger.v3.oas.annotations.media.Schema
 

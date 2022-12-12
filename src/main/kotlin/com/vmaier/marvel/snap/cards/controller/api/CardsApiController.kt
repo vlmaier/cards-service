@@ -1,8 +1,8 @@
 package com.vmaier.marvel.snap.cards.controller.api
 
 import com.vmaier.marvel.snap.cards.dto.CardConverter
-import com.vmaier.marvel.snap.cards.openapi.CardResponse
-import com.vmaier.marvel.snap.cards.openapi.CreateCardRequest
+import com.vmaier.marvel.snap.cards.openapi.model.CardResponse
+import com.vmaier.marvel.snap.cards.openapi.model.CreateCardRequest
 import com.vmaier.marvel.snap.cards.service.CardsService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter

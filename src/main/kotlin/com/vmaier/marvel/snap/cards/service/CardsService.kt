@@ -4,7 +4,7 @@ import com.vmaier.marvel.snap.cards.db.dao.Card
 import com.vmaier.marvel.snap.cards.db.repo.CardRepository
 import com.vmaier.marvel.snap.cards.dto.CardConverter
 import com.vmaier.marvel.snap.cards.dto.CreateCardDTO
-import com.vmaier.marvel.snap.cards.openapi.CreateCardRequest
+import com.vmaier.marvel.snap.cards.openapi.model.CreateCardRequest
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
