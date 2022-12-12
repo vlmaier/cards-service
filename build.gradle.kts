@@ -34,6 +34,7 @@ dependencies {
     implementation(platform("com.amazonaws:aws-java-sdk-bom:1.12.351"))
     implementation("com.amazonaws:aws-java-sdk-s3")
     implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359")
+    implementation("org.flywaydb:flyway-core:9.8.3")
     runtimeOnly("org.postgresql:postgresql")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
