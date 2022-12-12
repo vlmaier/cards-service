@@ -2,7 +2,7 @@ package com.vmaier.marvel.snap.cards.openapi.model
 
 import io.swagger.v3.oas.annotations.media.Schema
 
-@Schema(description = "Model for viewing information of a card")
+@Schema(description = "Model for displaying information of a card")
 data class CardResponse(
 
     @field:Schema(description = "Unique card identifier")

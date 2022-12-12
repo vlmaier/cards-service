@@ -6,27 +6,49 @@ import com.vmaier.marvel.snap.cards.openapi.model.CreateCardRequest
 import com.vmaier.marvel.snap.cards.service.CardsService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.enums.ParameterIn
+import io.swagger.v3.oas.annotations.media.ArraySchema
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.springdoc.core.converters.models.PageableAsQueryParam
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-
+@Tag(name = "cards")
 @RestController
 @RequestMapping("/v1/cards", produces = ["application/json"])
 class CardsApiController constructor(private val cardsService: CardsService) {
 
-    @Operation(summary = "List all available cards", description = "TODO ...")
+    @Operation(summary = "List all available cards", description = "/openapi/list-cards.md")
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "OK")
         ]
     )
     @ResponseBody
-    @PageableAsQueryParam
+    @Parameter(
+        `in` = ParameterIn.QUERY,
+        description = "Zero-based page index (0..N)",
+        name = "page",
+        schema = Schema(type = "integer", defaultValue = "0")
+    )
+    @Parameter(
+        `in` = ParameterIn.QUERY,
+        description = "The size of the page to be returned",
+        name = "size",
+        schema = Schema(type = "integer", defaultValue = "5")
+    )
+    @Parameter(
+        `in` = ParameterIn.QUERY,
+        description = "Sorting criteria in the format: property,(asc|desc). "
+                + "Default sort order is ascending. "
+                + "Multiple sort criteria are supported. ",
+        name = "sort",
+        array = ArraySchema(schema = Schema(type = "string"))
+    )
     @GetMapping
     fun listCards(@Parameter(hidden = true) page: Pageable): ResponseEntity<List<CardResponse>> {
         val cardPage = cardsService.getAllCards(page)
