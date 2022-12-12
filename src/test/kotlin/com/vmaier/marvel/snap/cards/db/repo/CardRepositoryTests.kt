@@ -17,11 +17,11 @@ class CardRepositoryTests @Autowired constructor(
     val entityManager: TestEntityManager,
     val cardRepository: CardRepository) {
 
-    var cards: List<Card> = listOf()
+    var testData: List<Card> = listOf()
 
     @BeforeEach
     internal fun init() {
-        cards = listOf(
+        testData = listOf(
             Card("Abomination", 5, 9, null, "https://marvelsnapzone.com/wp-content/themes/blocksy-child/assets/media/cards/abomination.webp"),
             Card("Absorbing Man", 4, 3, "On reveal: If the last card you played has an on reveal ability, this card copies it.", "https://marvelsnapzone.com/wp-content/themes/blocksy-child/assets/media/cards/absorbing-man.webp"),
             Card("Adam Warlock", 2, 0, "At the end of each turn, if you are winning this location, draw a card.", "https://marvelsnapzone.com/wp-content/themes/blocksy-child/assets/media/cards/absorbing-man.webp"),
@@ -33,7 +33,7 @@ class CardRepositoryTests @Autowired constructor(
             Card("Angel", 1, 2, "When one of your cards is destroyed, this flies out of your deck to replace it.", "https://marvelsnapzone.com/wp-content/themes/blocksy-child/assets/media/cards/angel.webp"),
             Card("Angela", 2, 0, "When you play a card here, +2 power.", "https://marvelsnapzone.com/wp-content/themes/blocksy-child/assets/media/cards/angela.webp")
         )
-        for (card in cards) {
+        for (card in testData) {
             entityManager.persist(card)
         }
         entityManager.flush()
@@ -41,7 +41,7 @@ class CardRepositoryTests @Autowired constructor(
 
     @AfterEach
     internal fun destroy() {
-        for (card in cards) {
+        for (card in testData) {
             entityManager.remove(entityManager.merge(card))
         }
         entityManager.flush()
@@ -49,9 +49,9 @@ class CardRepositoryTests @Autowired constructor(
 
     @Test
     fun `When findByIdOrNull then return card`() {
-        val id = Random(Date().time).nextInt(cards.first().id!!, cards.last().id!!)
+        val id = Random(Date().time).nextInt(testData.first().id!!, testData.last().id!!)
         val found = cardRepository.findByIdOrNull(id)
-        assertThat(cards.contains(found)).isTrue
+        assertThat(testData.contains(found)).isTrue
     }
 
     @Test
@@ -64,9 +64,9 @@ class CardRepositoryTests @Autowired constructor(
 
     @Test
     fun `Update image URL on a card`() {
-        val card = cards[Random(Date().time).nextInt(cards.indexOf(cards.first()), cards.lastIndex)]
+        val card = testData[Random(Date().time).nextInt(testData.indexOf(testData.first()), testData.lastIndex)]
         val newUrl = "https://test/image/test.jpg"
-        cardRepository.updateImageUrl(card.id!!, "https://test/image/test.jpg")
+        cardRepository.updateImageUrl(card.id!!, newUrl)
         val found = cardRepository.findByIdOrNull(card.id!!)
         assertThat(found?.url.equals(newUrl))
     }
