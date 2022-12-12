@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping
 class IndexController {
 
     @GetMapping("/")
-    fun listCards(): String {
+    fun index(): String {
         return "index"
     }
 }
