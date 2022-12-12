@@ -7,13 +7,7 @@
 
 name: Java CI with Gradle
 run-name: ${{ github.actor }} pushed new code 🚀
-on:
-  push:
-    branches: [ $default-branch ]
-  pull_request:
-    branches: [ $default-branch ]
-permissions:
-  contents: read
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
