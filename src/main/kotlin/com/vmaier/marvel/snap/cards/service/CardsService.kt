@@ -16,6 +16,10 @@ class CardsService constructor(
     private val cardRepository: CardRepository,
     private val s3Service: S3Service) {
 
+    fun getAllCards(): MutableIterable<Card> {
+        return cardRepository.findAll()
+    }
+
     fun getAllCards(page: Pageable): Page<Card> {
         // TODO: input validation
         return cardRepository.findAll(page)

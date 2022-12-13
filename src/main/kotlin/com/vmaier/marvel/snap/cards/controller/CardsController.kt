@@ -13,15 +13,22 @@ import java.util.*
 class CardsController constructor(private val cardsService: CardsService) {
 
     @GetMapping("cards")
-    fun listCards(model: Model,
-                  @RequestParam("page") page: Optional<Int>,
-                  @RequestParam("size") size: Optional<Int>
+    fun listCardsAsTable(model: Model,
+                         @RequestParam("page") page: Optional<Int>,
+                         @RequestParam("size") size: Optional<Int>
     ): String {
         val currentPage = page.orElse(1)
         val pageSize = size.orElse(Constants.PAGE_SIZE)
         val cardPage = cardsService.getAllCards(PageRequest.of(currentPage - 1, pageSize))
         model.addAttribute("cardPage", cardPage)
         return "cards"
+    }
+
+    @GetMapping("card-grid")
+    fun listCardsAsGrid(model: Model): String {
+        val cards = cardsService.getAllCards()
+        model.addAttribute("cards", cards)
+        return "card-grid"
     }
 
     @GetMapping("cards/{cardId}")
