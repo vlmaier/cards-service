@@ -18,7 +18,7 @@
         <i class="material-icons" style="font-size: 20px; vertical-align: text-bottom;">grid_view</i>
     </a>
     <form class="d-inline-flex" th:action="@{/cards?keyword=${keyword}}" th:method="GET">
-        <input class="ms-1 form-control" placeholder="Search" th:name="keyword" type="text" />
+        <input class="ms-1 form-control" placeholder="Search" th:name="keyword" th:value="${keyword}" type="text" />
         <button class="ms-1 btn btn-primary" type="submit">
             <i class="material-icons" style="font-size: 20px; vertical-align: text-bottom;">search</i>
         </button>
@@ -72,7 +72,7 @@
             </a>
         </li>
         <li class="page-item" th:classappend="${i eq cardPage.number + 1} ? 'active'"
-            th:each="i : ${#numbers.sequence(T(java.lang.Math).min(cardPage.number + 1, cardPage.totalPages - (cardPage.size - 1)), T(java.lang.Math).min(cardPage.number + cardPage.size, cardPage.totalPages), 1)}">
+            th:each="i : ${#numbers.sequence(T(java.lang.Math).min(cardPage.number + 1, T(java.lang.Math).abs(cardPage.totalPages - (cardPage.size - 1))), T(java.lang.Math).min(cardPage.number + cardPage.size, cardPage.totalPages), 1)}">
             <a class="page-link" th:href="@{/cards(keyword=${keyword}, size=${cardPage.size}, page=${i})}" th:text="${i}"
                th:title="${'Page ' + i}"></a>
         </li>
