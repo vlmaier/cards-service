@@ -16,7 +16,7 @@ class CardsService constructor(
     private val cardRepository: CardRepository,
     private val s3Service: S3Service) {
 
-    fun getAllCards(): MutableIterable<Card> {
+    fun getAllCards(): Iterable<Card> {
         return cardRepository.findAll()
     }
 
@@ -28,6 +28,14 @@ class CardsService constructor(
     fun getOneCard(cardId: Int): Card {
         // TODO: exception handling
         return cardRepository.findByIdOrNull(cardId) ?: throw RuntimeException()
+    }
+
+    fun getAllCardsByKeyword(keyword: String): Iterable<Card> {
+        return cardRepository.findAllByNameContainingIgnoreCaseOrAbilityContainingIgnoreCase(keyword, keyword)
+    }
+
+    fun getAllCardsByKeyword(page: Pageable, keyword: String): Page<Card> {
+        return cardRepository.findAllByNameContainingIgnoreCaseOrAbilityContainingIgnoreCase(page, keyword, keyword)
     }
 
     @Transactional

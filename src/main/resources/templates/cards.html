@@ -13,13 +13,21 @@
 </head>
 <body>
 <h1 class="mx-4 my-4">All cards</h1>
-<a class="ms-4 mb-2 btn btn-outline-primary" href="card-grid">
-    <i class="material-icons" style="font-size: 20px; vertical-align: text-bottom;">grid_view</i>
-</a>
-<a class="ms-1 mb-2 btn btn-primary" href="new-card">Add card</a>
-<form class="d-inline" th:action="@{/cards}" th:method="DELETE">
-    <button class="ms-1 mb-2 btn btn-danger" type="submit">Delete all</button>
-</form>
+<div class="ms-4 d-flex">
+    <a class="btn btn-outline-primary" href="card-grid">
+        <i class="material-icons" style="font-size: 20px; vertical-align: text-bottom;">grid_view</i>
+    </a>
+    <form class="d-inline-flex" th:action="@{/cards?keyword=${keyword}}" th:method="GET">
+        <input class="ms-1 form-control" placeholder="Search" th:name="keyword" th:value="${keyword}" type="text" />
+        <button class="ms-1 btn btn-primary" type="submit">
+            <i class="material-icons" style="font-size: 20px; vertical-align: text-bottom;">search</i>
+        </button>
+    </form>
+    <a class="ms-1 btn btn-primary" href="new-card">Add card</a>
+    <form class="d-inline" th:action="@{/cards}" th:method="DELETE">
+        <button class="ms-1 btn btn-danger" type="submit">Delete all</button>
+    </form>
+</div>
 <div class="my-3 table-responsive-lg">
     <table class="mx-3 table table-hover align-middle">
         <thead>
@@ -49,13 +57,13 @@
     <ul class="pagination justify-content-center fw-bold">
         <li class="page-item" th:classappend="${cardPage.number eq 0} ? 'disabled'">
             <a class="page-link"
-               th:href="@{/cards(size=${cardPage.size}, page=${cardPage.number lt 2 ? 1 : cardPage.number})}"
+               th:href="@{/cards(keyword=${keyword}, size=${cardPage.size}, page=${cardPage.number lt 2 ? 1 : cardPage.number})}"
                title="Previous Page">
                 <span>&laquo;</span>
             </a>
         </li>
         <li class="page-item" th:if="${cardPage.number gt cardPage.size - 1}">
-            <a class="page-link" th:href="@{/cards(size=${cardPage.size}, page=1)}" th:text="1"
+            <a class="page-link" th:href="@{/cards(keyword=${keyword}, size=${cardPage.size}, page=1)}" th:text="1"
                th:title="${'Page ' + cardPage.number}"></a>
         </li>
         <li class="page-item" th:if="${cardPage.number gt cardPage.size - 1}">
@@ -64,8 +72,8 @@
             </a>
         </li>
         <li class="page-item" th:classappend="${i eq cardPage.number + 1} ? 'active'"
-            th:each="i : ${#numbers.sequence(T(java.lang.Math).min(cardPage.number + 1, cardPage.totalPages - (cardPage.size - 1)), T(java.lang.Math).min(cardPage.number + cardPage.size, cardPage.totalPages), 1)}">
-            <a class="page-link" th:href="@{/cards(size=${cardPage.size}, page=${i})}" th:text="${i}"
+            th:each="i : ${#numbers.sequence(T(java.lang.Math).min(cardPage.number + 1, T(java.lang.Math).abs(cardPage.totalPages - (cardPage.size - 1))), T(java.lang.Math).min(cardPage.number + cardPage.size, cardPage.totalPages), 1)}">
+            <a class="page-link" th:href="@{/cards(keyword=${keyword}, size=${cardPage.size}, page=${i})}" th:text="${i}"
                th:title="${'Page ' + i}"></a>
         </li>
         <li class="page-item"
@@ -76,13 +84,13 @@
         </li>
         <li class="page-item"
             th:if="${cardPage.totalPages gt T(java.lang.Math).min(cardPage.number + cardPage.size, cardPage.totalPages)}">
-            <a class="page-link" th:href="@{/cards(size=${cardPage.size}, page=${cardPage.totalPages})}"
+            <a class="page-link" th:href="@{/cards(keyword=${keyword}, size=${cardPage.size}, page=${cardPage.totalPages})}"
                th:text="${cardPage.totalPages}"
                th:title="${'Page ' + cardPage.number}"></a>
         </li>
         <li class="page-item" th:classappend="${cardPage.number + 1 eq cardPage.totalPages} ? 'disabled'">
             <a class="page-link"
-               th:href="@{/cards(size=${cardPage.size}, page=${cardPage.number + 2})}"
+               th:href="@{/cards(keyword=${keyword}, size=${cardPage.size}, page=${cardPage.number + 2})}"
                title="Next Page">
                 <span>&raquo;</span>
             </a>

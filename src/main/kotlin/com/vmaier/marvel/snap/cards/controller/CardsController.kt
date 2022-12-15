@@ -1,8 +1,10 @@
 package com.vmaier.marvel.snap.cards.controller
 
 import com.vmaier.marvel.snap.cards.Constants
+import com.vmaier.marvel.snap.cards.db.dao.Card
 import com.vmaier.marvel.snap.cards.dto.CreateCardDTO
 import com.vmaier.marvel.snap.cards.service.CardsService
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -15,18 +17,33 @@ class CardsController constructor(private val cardsService: CardsService) {
     @GetMapping("cards")
     fun listCardsAsTable(model: Model,
                          @RequestParam("page") page: Optional<Int>,
-                         @RequestParam("size") size: Optional<Int>
+                         @RequestParam("size") size: Optional<Int>,
+                         @RequestParam(value = "keyword", required = false) keyword: String?
     ): String {
         val currentPage = page.orElse(1)
         val pageSize = size.orElse(Constants.PAGE_SIZE)
-        val cardPage = cardsService.getAllCards(PageRequest.of(currentPage - 1, pageSize))
+        val cardPage: Page<Card>
+        if (keyword.isNullOrEmpty()) {
+            cardPage = cardsService.getAllCards(PageRequest.of(currentPage - 1, pageSize))
+        } else {
+            cardPage = cardsService.getAllCardsByKeyword(PageRequest.of(currentPage - 1, pageSize), keyword)
+            model.addAttribute("keyword", keyword)
+        }
         model.addAttribute("cardPage", cardPage)
         return "cards"
     }
 
     @GetMapping("card-grid")
-    fun listCardsAsGrid(model: Model): String {
-        val cards = cardsService.getAllCards()
+    fun listCardsAsGrid(model: Model,
+                        @RequestParam(value = "keyword", required = false) keyword: String?
+    ): String {
+        val cards: Iterable<Card>
+        if (keyword.isNullOrEmpty()) {
+            cards = cardsService.getAllCards()
+        } else {
+            cards = cardsService.getAllCardsByKeyword(keyword)
+            model.addAttribute("keyword", keyword)
+        }
         model.addAttribute("cards", cards)
         return "card-grid"
     }

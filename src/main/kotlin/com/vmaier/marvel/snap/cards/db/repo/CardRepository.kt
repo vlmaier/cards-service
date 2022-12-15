@@ -13,6 +13,10 @@ interface CardRepository: CrudRepository<Card, Int> {
 
     fun findAll(pageable: Pageable): Page<Card>
 
+    fun findAllByNameContainingIgnoreCaseOrAbilityContainingIgnoreCase(name: String, ability: String): Iterable<Card>
+
+    fun findAllByNameContainingIgnoreCaseOrAbilityContainingIgnoreCase(pageable: Pageable, name: String, ability: String): Page<Card>
+
     @Modifying
     @Query("UPDATE Card c SET c.url = :url WHERE c.id = :id")
     fun updateImageUrl(@Param(value = "id") id: Int, @Param(value = "url") url: String)
