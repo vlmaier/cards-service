@@ -6,6 +6,7 @@ If no cards are available, an empty list is returned.
 
 #### Available query parameters
 
+- `keyword` - Search for a keyword in cards (name or ability)
 - `page` - If not set, the first (`0`) page is returned.
 - `size` - If not set, maximum `5` first cards are returned.
 - `sort` - If not set, the cards are sorted by name in ascending order.  

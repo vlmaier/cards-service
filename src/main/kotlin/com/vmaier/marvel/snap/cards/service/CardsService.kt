@@ -16,26 +16,26 @@ class CardsService constructor(
     private val cardRepository: CardRepository,
     private val s3Service: S3Service) {
 
-    fun getAllCards(): Iterable<Card> {
-        return cardRepository.findAll()
-    }
-
-    fun getAllCards(page: Pageable): Page<Card> {
-        // TODO: input validation
-        return cardRepository.findAll(page)
-    }
-
     fun getOneCard(cardId: Int): Card {
         // TODO: exception handling
         return cardRepository.findByIdOrNull(cardId) ?: throw RuntimeException()
     }
 
-    fun getAllCardsByKeyword(keyword: String): Iterable<Card> {
-        return cardRepository.findAllByNameContainingIgnoreCaseOrAbilityContainingIgnoreCase(keyword, keyword)
+    fun getAllCardsByKeyword(page: Pageable, keyword: String?): Page<Card> {
+        // TODO: input validation
+        return if (keyword.isNullOrEmpty()) {
+            cardRepository.findAll(page)
+        } else {
+            cardRepository.findAllByNameContainingIgnoreCaseOrAbilityContainingIgnoreCase(page, keyword, keyword)
+        }
     }
 
-    fun getAllCardsByKeyword(page: Pageable, keyword: String): Page<Card> {
-        return cardRepository.findAllByNameContainingIgnoreCaseOrAbilityContainingIgnoreCase(page, keyword, keyword)
+    fun getAllCardsByKeyword(keyword: String?): Iterable<Card> {
+        return if (keyword.isNullOrEmpty()) {
+            cardRepository.findAll()
+        } else {
+            cardRepository.findAllByNameContainingIgnoreCaseOrAbilityContainingIgnoreCase(keyword, keyword)
+        }
     }
 
     @Transactional

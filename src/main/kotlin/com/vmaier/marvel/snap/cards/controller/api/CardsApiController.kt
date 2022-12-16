@@ -49,9 +49,16 @@ class CardsApiController constructor(private val cardsService: CardsService) {
         name = "sort",
         array = ArraySchema(schema = Schema(type = "string"))
     )
+    @Parameter(
+        `in` = ParameterIn.QUERY,
+        description = "Search for a keyword in cards (name or ability)",
+        name = "keyword",
+        schema = Schema(type = "string", defaultValue = "")
+    )
     @GetMapping
-    fun listCards(@Parameter(hidden = true) page: Pageable): ResponseEntity<List<CardResponse>> {
-        val cardPage = cardsService.getAllCards(page)
+    fun listCards(@Parameter(hidden = true) page: Pageable, keyword: String?
+    ): ResponseEntity<List<CardResponse>> {
+        val cardPage = cardsService.getAllCardsByKeyword(page, keyword)
         val response = CardConverter.convertToModel(cardPage.toList())
         return ResponseEntity<List<CardResponse>>(response, HttpStatus.OK)
     }
