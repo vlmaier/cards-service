@@ -17,8 +17,7 @@ class CardsService constructor(
     private val s3Service: S3Service) {
 
     fun getOneCard(cardId: Int): Card {
-        // TODO: exception handling
-        return cardRepository.findByIdOrNull(cardId) ?: throw RuntimeException()
+        return cardRepository.findByIdOrNull(cardId) ?: throw NotFoundException("Card with id: $cardId not found.")
     }
 
     fun getAllCardsByKeyword(page: Pageable, keyword: String?): Page<Card> {

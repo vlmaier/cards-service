@@ -3,11 +3,13 @@ package com.vmaier.marvel.snap.cards.controller.api
 import com.vmaier.marvel.snap.cards.dto.CardConverter
 import com.vmaier.marvel.snap.cards.openapi.model.CardResponse
 import com.vmaier.marvel.snap.cards.openapi.model.CreateCardRequest
+import com.vmaier.marvel.snap.cards.openapi.model.ErrorResponse
 import com.vmaier.marvel.snap.cards.service.CardsService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.enums.ParameterIn
 import io.swagger.v3.oas.annotations.media.ArraySchema
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -33,13 +35,13 @@ class CardsApiController constructor(private val cardsService: CardsService) {
         `in` = ParameterIn.QUERY,
         description = "Zero-based page index (0..N)",
         name = "page",
-        schema = Schema(type = "integer", defaultValue = "0")
+        schema = Schema(type = "integer")
     )
     @Parameter(
         `in` = ParameterIn.QUERY,
         description = "The size of the page to be returned",
         name = "size",
-        schema = Schema(type = "integer", defaultValue = "5")
+        schema = Schema(type = "integer")
     )
     @Parameter(
         `in` = ParameterIn.QUERY,
@@ -53,11 +55,10 @@ class CardsApiController constructor(private val cardsService: CardsService) {
         `in` = ParameterIn.QUERY,
         description = "Search for a keyword in cards (name or ability)",
         name = "keyword",
-        schema = Schema(type = "string", defaultValue = "")
+        schema = Schema(type = "string")
     )
     @GetMapping
-    fun listCards(@Parameter(hidden = true) page: Pageable, keyword: String?
-    ): ResponseEntity<List<CardResponse>> {
+    fun listCards(@Parameter(hidden = true) page: Pageable, keyword: String?): ResponseEntity<List<CardResponse>> {
         val cardPage = cardsService.getAllCardsByKeyword(page, keyword)
         val response = CardConverter.convertToModel(cardPage.toList())
         return ResponseEntity<List<CardResponse>>(response, HttpStatus.OK)
@@ -66,7 +67,12 @@ class CardsApiController constructor(private val cardsService: CardsService) {
     @Operation(summary = "Find card", description = "TODO ...")
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "OK")
+            ApiResponse(responseCode = "200", description = "OK", content = [
+                Content(schema = Schema(implementation = CardResponse::class))
+            ]),
+            ApiResponse(responseCode = "404", description = "Not Found", content = [
+                Content(schema = Schema(implementation = ErrorResponse::class))
+            ])
         ]
     )
     @ResponseBody
