@@ -1,6 +1,7 @@
 package com.vmaier.marvel.snap.cards.controller
 
 import com.vmaier.marvel.snap.cards.Constants
+import com.vmaier.marvel.snap.cards.db.dao.Card
 import com.vmaier.marvel.snap.cards.dto.CreateCardDTO
 import com.vmaier.marvel.snap.cards.service.CardsService
 import org.springframework.data.domain.PageRequest
@@ -28,10 +29,18 @@ class CardsController constructor(private val cardsService: CardsService) {
 
     @GetMapping("card-grid")
     fun listCardsAsGrid(model: Model,
-                        @RequestParam(value = "keyword", required = false) keyword: String?
+                        @RequestParam(value = "keyword") keyword: Optional<String>,
+                        @RequestParam(value = "cost") cost: Optional<String>,
+                        @RequestParam(value = "power") power: Optional<String>
     ): String {
-        val cards = cardsService.getAllCardsByKeyword(keyword)
         model.addAttribute("keyword", keyword)
+        model.addAttribute("cost", cost)
+        model.addAttribute("power", power)
+        val cards = cardsService.getAllCardsByKeyword(keyword, cost, power)
+        val costValues = cards.map { card: Card -> card.cost }.toSet().sorted()
+        val powerValues = cards.map { card: Card -> card.power }.toSet().sorted()
+        model.addAttribute("costValues", costValues)
+        model.addAttribute("powerValues", powerValues)
         model.addAttribute("cards", cards)
         return "card-grid"
     }

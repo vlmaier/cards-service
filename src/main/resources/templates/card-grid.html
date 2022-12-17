@@ -9,6 +9,27 @@
         function imageClicked(value) {
             location.href = "cards/" + value;
         }
+        function filterChanged(keyword, cost, power) {
+            let url = "/card-grid";
+            if (keyword !== null) {
+                url += "?keyword=" + keyword;
+            }
+            if (cost !== null) {
+                if (url.includes("?")) {
+                    url += "&cost=" + cost;
+                } else {
+                    url += "?cost=" + cost;
+                }
+            }
+            if (power !== null) {
+                if (url.includes("?")) {
+                    url += "&power=" + power;
+                } else {
+                    url += "?power=" + power;
+                }
+            }
+            location.href = url;
+        }
     </script>
 </head>
 <body>
@@ -18,20 +39,38 @@
         <i class="material-icons" style="font-size: 20px; vertical-align: text-bottom;">table_rows</i>
     </a>
     <form class="d-inline-flex" th:action="@{/card-grid?keyword=${keyword}}" th:method="GET">
-        <input class="ms-1 form-control" placeholder="Search" th:name="keyword" th:value="${keyword}" type="text" />
+        <input class="ms-1 form-control" placeholder="Search" th:name="keyword" th:value="${keyword.isPresent() ? keyword.get() : null}" type="text" />
         <button class="ms-1 btn btn-primary" type="submit">
             <i class="material-icons" style="font-size: 20px; vertical-align: text-bottom;">search</i>
         </button>
     </form>
+    <select class="ms-1 form-select-lg" th:value="${cost}"
+            th:data-keyword="${keyword.isPresent() ? keyword.get() : null}"
+            th:data-cost="${cost.isPresent() ? cost.get() : null}"
+            th:data-power="${power.isPresent() ? power.get() : null}"
+            onchange="filterChanged(this.getAttribute('data-keyword'), this.getAttribute('data-cost'), this.getAttribute('data-power'));">
+        <option th:value="''">any</option>
+        <option th:each="i : ${costValues}" th:value="${i}" th:text="${i}" th:selected="${i} == ${cost}"></option>
+    </select>
+    <select class="ms-1 form-select-lg" name="power"
+            th:data-keyword="${keyword.isPresent() ? keyword.get() : null}"
+            th:data-cost="${cost.isPresent() ? cost.get() : null}"
+            th:data-power="${power.isPresent() ? power.get() : null}"
+            onchange="filterChanged(this.getAttribute('data-keyword'), this.getAttribute('data-cost'), this.getAttribute('data-power'));">
+        <option th:value="''">any</option>
+        <option th:each="i : ${powerValues}" th:value="${i}" th:text="${i}"></option>
+    </select>
     <a class="ms-1 btn btn-primary" href="new-card">Add card</a>
-    <form class="d-inline" th:action="@{/cards}" th:method="DELETE">
-        <button class="ms-1 btn btn-danger" type="submit">Delete all</button>
+    <form class="d-inline-flex" th:action="@{/cards}" th:method="DELETE">
+        <button class="ms-1 btn btn-danger" style="vertical-align: text-bottom;" type="submit">Delete all</button>
     </form>
 </div>
 <div class="container-fluid text-center">
     <div class="row my-4 g-0 px-4">
         <div class="card mx-auto mt-4" style="width: 18rem; cursor: pointer" th:each="card: ${cards}">
-            <img class="card-img-top" th:onclick="'javascript:imageClicked(\'' + ${card.id} + '\');'" th:src="@{${card.url}}"/>
+            <img class="card-img-top"
+                 th:data-id="${card.id}"
+                 onclick="imageClicked(this.getAttribute('data-id'));" th:src="@{${card.url}}"/>
             <div class="card-body">
                 <h5 class="card-title" th:text="${card.name}"></h5>
                 <p class="card-text" th:text="${card.ability eq '' ? 'No ability' : card.ability}"></p>
