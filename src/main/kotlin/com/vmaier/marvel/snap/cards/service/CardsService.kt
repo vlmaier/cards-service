@@ -10,8 +10,6 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import java.util.*
-import kotlin.math.cos
 
 @Service
 class CardsService constructor(
@@ -31,20 +29,20 @@ class CardsService constructor(
         }
     }
 
-    fun getAllCardsByKeyword(keyword: Optional<String>, cost: Optional<String>, power: Optional<String>): Iterable<Card> {
-        var cards = if (keyword.isEmpty) {
+    fun getAllCardsByKeyword(keyword: String?, cost: Int?, power: Int?): Iterable<Card> {
+        var cards = if (keyword.isNullOrEmpty()) {
             cardRepository.findAll()
         } else {
-            cardRepository.findAllByKeyword(keyword.get())
+            cardRepository.findAllByKeyword(keyword)
         }
-        if (cost.isPresent) {
+        if (cost != null) {
             cards = cards.filter {
-                card -> card.cost == cost.get().toInt()
+                card -> card.cost == cost
             }
         }
-        if (power.isPresent) {
+        if (power != null) {
             cards = cards.filter {
-                card -> card.power == power.get().toInt()
+                card -> card.power == power
             }
         }
         return cards

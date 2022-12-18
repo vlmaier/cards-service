@@ -9,59 +9,44 @@
         function imageClicked(value) {
             location.href = "cards/" + value;
         }
-        function filterChanged(keyword, cost, power) {
-            let url = "/card-grid";
-            if (keyword !== null) {
-                url += "?keyword=" + keyword;
-            }
-            if (cost !== null) {
-                if (url.includes("?")) {
-                    url += "&cost=" + cost;
-                } else {
-                    url += "?cost=" + cost;
-                }
-            }
-            if (power !== null) {
-                if (url.includes("?")) {
-                    url += "&power=" + power;
-                } else {
-                    url += "?power=" + power;
-                }
-            }
-            location.href = url;
-        }
     </script>
 </head>
 <body>
 <h1 class="mx-4 my-4">All cards</h1>
 <div class="ms-4 d-flex">
     <a class="btn btn-outline-primary" href="cards">
-        <i class="material-icons" style="font-size: 20px; vertical-align: text-bottom;">table_rows</i>
+        <i class="material-icons" style="font-size: 20px; vertical-align: center;">table_rows</i>
     </a>
-    <form class="d-inline-flex" th:action="@{/card-grid?keyword=${keyword}}" th:method="GET">
-        <input class="ms-1 form-control" placeholder="Search" th:name="keyword" th:value="${keyword.isPresent() ? keyword.get() : null}" type="text" />
+    <form class="d-flex" th:action="@{/card-grid?keyword=${keyword}}" th:method="GET">
+        <input th:if="${cost != null}" type="hidden" name="cost" th:value="${cost}"/>
+        <input th:if="${power != null}" type="hidden" name="power" th:value="${power}"/>
+        <input class="ms-1 form-control" placeholder="Search" th:name="keyword" th:value="${keyword}" type="text"/>
         <button class="ms-1 btn btn-primary" type="submit">
             <i class="material-icons" style="font-size: 20px; vertical-align: text-bottom;">search</i>
         </button>
     </form>
-    <select class="ms-1 form-select-lg" th:value="${cost}"
-            th:data-keyword="${keyword.isPresent() ? keyword.get() : null}"
-            th:data-cost="${cost.isPresent() ? cost.get() : null}"
-            th:data-power="${power.isPresent() ? power.get() : null}"
-            onchange="filterChanged(this.getAttribute('data-keyword'), this.getAttribute('data-cost'), this.getAttribute('data-power'));">
-        <option th:value="''">any</option>
-        <option th:each="i : ${costValues}" th:value="${i}" th:text="${i}" th:selected="${i} == ${cost}"></option>
-    </select>
-    <select class="ms-1 form-select-lg" name="power"
-            th:data-keyword="${keyword.isPresent() ? keyword.get() : null}"
-            th:data-cost="${cost.isPresent() ? cost.get() : null}"
-            th:data-power="${power.isPresent() ? power.get() : null}"
-            onchange="filterChanged(this.getAttribute('data-keyword'), this.getAttribute('data-cost'), this.getAttribute('data-power'));">
-        <option th:value="''">any</option>
-        <option th:each="i : ${powerValues}" th:value="${i}" th:text="${i}"></option>
-    </select>
+    <form class="ms-2 d-inline-flex">
+        <input th:if="${keyword != null}" type="hidden" name="keyword" th:value="${keyword}"/>
+        <div class="d-flex text-center">
+            <label for="cost" class="me-1 my-auto control-label">Cost:</label>
+            <select class="form-select" name="cost" id="cost">
+                <option value="">any</option>
+                <option th:each="i : ${costValues}" th:value="${i}" th:text="${i}"
+                        th:selected="${i} == ${cost}"></option>
+            </select>
+        </div>
+        <div class="form-group d-flex">
+            <label for="power" class="ms-2 me-1 my-auto control-label">Power:</label>
+            <select class="ms-1 form-select" name="power" id="power">
+                <option value="">any</option>
+                <option th:each="i : ${powerValues}" th:value="${i}" th:text="${i}"
+                        th:selected="${i} == ${power}"></option>
+            </select>
+        </div>
+        <button class="ms-2 btn btn-primary" type="submit">Apply</button>
+    </form>
     <a class="ms-1 btn btn-primary" href="new-card">Add card</a>
-    <form class="d-inline-flex" th:action="@{/cards}" th:method="DELETE">
+    <form class="d-flex" th:action="@{/cards}" th:method="DELETE">
         <button class="ms-1 btn btn-danger" style="vertical-align: text-bottom;" type="submit">Delete all</button>
     </form>
 </div>

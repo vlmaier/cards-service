@@ -29,16 +29,16 @@ class CardsController constructor(private val cardsService: CardsService) {
 
     @GetMapping("card-grid")
     fun listCardsAsGrid(model: Model,
-                        @RequestParam(value = "keyword") keyword: Optional<String>,
-                        @RequestParam(value = "cost") cost: Optional<String>,
-                        @RequestParam(value = "power") power: Optional<String>
+                        @RequestParam(value = "keyword", required = false) keyword: String?,
+                        @RequestParam(value = "cost", required = false) cost: Int?,
+                        @RequestParam(value = "power", required = false) power: Int?
     ): String {
-        model.addAttribute("keyword", keyword)
-        model.addAttribute("cost", cost)
-        model.addAttribute("power", power)
         val cards = cardsService.getAllCardsByKeyword(keyword, cost, power)
         val costValues = cards.map { card: Card -> card.cost }.toSet().sorted()
         val powerValues = cards.map { card: Card -> card.power }.toSet().sorted()
+        model.addAttribute("keyword", keyword)
+        model.addAttribute("cost", cost)
+        model.addAttribute("power", power)
         model.addAttribute("costValues", costValues)
         model.addAttribute("powerValues", powerValues)
         model.addAttribute("cards", cards)
