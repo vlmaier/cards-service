@@ -25,16 +25,27 @@ class CardsService constructor(
         return if (keyword.isNullOrEmpty()) {
             cardRepository.findAll(page)
         } else {
-            cardRepository.findAllByNameContainingIgnoreCaseOrAbilityContainingIgnoreCase(page, keyword, keyword)
+            cardRepository.findAllByKeyword(page, keyword)
         }
     }
 
-    fun getAllCardsByKeyword(keyword: String?): Iterable<Card> {
-        return if (keyword.isNullOrEmpty()) {
+    fun getAllCardsByKeyword(keyword: String?, cost: Int?, power: Int?): Iterable<Card> {
+        var cards = if (keyword.isNullOrEmpty()) {
             cardRepository.findAll()
         } else {
-            cardRepository.findAllByNameContainingIgnoreCaseOrAbilityContainingIgnoreCase(keyword, keyword)
+            cardRepository.findAllByKeyword(keyword)
         }
+        if (cost != null) {
+            cards = cards.filter {
+                card -> card.cost == cost
+            }
+        }
+        if (power != null) {
+            cards = cards.filter {
+                card -> card.power == power
+            }
+        }
+        return cards
     }
 
     @Transactional
