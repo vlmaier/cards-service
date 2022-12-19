@@ -15,12 +15,12 @@ class CardsController constructor(private val cardsService: CardsService) {
 
     @GetMapping("cards")
     fun listCardsAsTable(model: Model,
-                         @RequestParam("page") page: Optional<Int>,
-                         @RequestParam("size") size: Optional<Int>,
+                         @RequestParam(value = "page", required = false) page: Int?,
+                         @RequestParam(value = "size", required = false) size: Int?,
                          @RequestParam(value = "keyword", required = false) keyword: String?
     ): String {
-        val currentPage = page.orElse(1)
-        val pageSize = size.orElse(Constants.PAGE_SIZE)
+        val currentPage = page ?: 1
+        val pageSize = size ?: Constants.PAGE_SIZE
         val cardPage = cardsService.getAllCardsByKeyword(PageRequest.of(currentPage - 1, pageSize), keyword)
         model.addAttribute("keyword", keyword)
         model.addAttribute("cardPage", cardPage)
