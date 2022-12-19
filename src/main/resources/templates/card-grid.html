@@ -15,7 +15,7 @@
 <h1 class="mx-4 my-4">All cards</h1>
 <div class="ms-4 d-flex">
     <a class="btn btn-outline-primary" href="cards">
-        <i class="material-icons" style="font-size: 20px; vertical-align: center;">table_rows</i>
+        <i class="material-icons" style="font-size: 20px; vertical-align: text-bottom;">table_rows</i>
     </a>
     <form class="d-flex" th:action="@{/card-grid?keyword=${keyword}}" th:method="GET">
         <input th:if="${cost != null}" type="hidden" name="cost" th:value="${cost}"/>
