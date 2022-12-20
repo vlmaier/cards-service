@@ -92,6 +92,11 @@ class CardsApiController constructor(private val cardsService: CardsService) {
                 ]
             ),
             ApiResponse(
+                responseCode = "400", description = "Bad Request", content = [
+                    Content(schema = Schema(implementation = ErrorResponse::class))
+                ]
+            ),
+            ApiResponse(
                 responseCode = "404", description = "Not Found", content = [
                     Content(schema = Schema(implementation = ErrorResponse::class))
                 ]
@@ -101,6 +106,7 @@ class CardsApiController constructor(private val cardsService: CardsService) {
     @ResponseBody
     @GetMapping("{cardId}")
     fun findCard(@PathVariable("cardId") cardId: Int): ResponseEntity<CardResponse> {
+        Validator.checkIfCardIdIsValid(cardId)
         val card = cardsService.getOneCard(cardId)
         val response = CardConverter.convertToModel(card)
         return ResponseEntity<CardResponse>(response, HttpStatus.OK)

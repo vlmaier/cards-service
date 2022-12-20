@@ -12,4 +12,11 @@ object Validator {
             throw ValidationException("keyword is too long (max. 128 characters)")
         }
     }
+
+    fun checkIfCardIdIsValid(cardId: Int) {
+        if (cardId > 0) {
+            return
+        }
+        throw ValidationException("cardId must be positive")
+    }
 }
