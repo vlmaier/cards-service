@@ -14,13 +14,17 @@ import java.util.*
 class CardsController constructor(private val cardsService: CardsService) {
 
     @GetMapping("cards")
-    fun listCardsAsTable(model: Model,
-                         @RequestParam(value = "page", required = false) page: Int?,
-                         @RequestParam(value = "size", required = false) size: Int?,
-                         @RequestParam(value = "keyword", required = false) keyword: String?
+    fun listCardsAsTable(
+        model: Model,
+        @RequestParam(value = "page", required = false) page: Int?,
+        @RequestParam(value = "size", required = false) size: Int?,
+        @RequestParam(value = "keyword", required = false) keyword: String?
     ): String {
         val currentPage = page ?: 1
-        val pageSize = size ?: Constants.PAGE_SIZE
+        var pageSize = size ?: Constants.DEFAULT_PAGE_SIZE
+        if (pageSize > Constants.MAX_PAGE_SIZE) {
+            pageSize = Constants.MAX_PAGE_SIZE
+        }
         val cardPage = cardsService.getAllCardsByKeyword(PageRequest.of(currentPage - 1, pageSize), keyword)
         model.addAttribute("keyword", keyword)
         model.addAttribute("cardPage", cardPage)
@@ -28,10 +32,11 @@ class CardsController constructor(private val cardsService: CardsService) {
     }
 
     @GetMapping("card-grid")
-    fun listCardsAsGrid(model: Model,
-                        @RequestParam(value = "keyword", required = false) keyword: String?,
-                        @RequestParam(value = "cost", required = false) cost: Int?,
-                        @RequestParam(value = "power", required = false) power: Int?
+    fun listCardsAsGrid(
+        model: Model,
+        @RequestParam(value = "keyword", required = false) keyword: String?,
+        @RequestParam(value = "cost", required = false) cost: Int?,
+        @RequestParam(value = "power", required = false) power: Int?
     ): String {
         val cards = cardsService.getAllCardsByKeyword(keyword, cost, power)
         val costValues = cards.map { card: Card -> card.cost }.toSet().sorted()
@@ -46,7 +51,7 @@ class CardsController constructor(private val cardsService: CardsService) {
     }
 
     @GetMapping("cards/{cardId}")
-    fun findCard(@PathVariable("cardId") cardId: Int, model: Model): String {
+    fun findCard(model: Model, @PathVariable("cardId") cardId: Int): String {
         model.addAttribute("card", cardsService.getOneCard(cardId))
         return "card"
     }
@@ -58,7 +63,7 @@ class CardsController constructor(private val cardsService: CardsService) {
     }
 
     @PostMapping("new-card")
-    fun addCard(request: CreateCardDTO, model: Model): String {
+    fun addCard(model: Model, request: CreateCardDTO): String {
         // TODO: input validation
         val newCard = cardsService.addNewCard(request)
         return "redirect:/cards/" + newCard.id

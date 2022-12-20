@@ -1,5 +1,6 @@
 package com.vmaier.marvel.snap.cards.controller.api
 
+import com.vmaier.marvel.snap.cards.Constants
 import com.vmaier.marvel.snap.cards.dto.CardConverter
 import com.vmaier.marvel.snap.cards.openapi.model.CardResponse
 import com.vmaier.marvel.snap.cards.openapi.model.CreateCardRequest
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -59,7 +61,13 @@ class CardsApiController constructor(private val cardsService: CardsService) {
     )
     @GetMapping
     fun listCards(@Parameter(hidden = true) page: Pageable, keyword: String?): ResponseEntity<List<CardResponse>> {
-        val cardPage = cardsService.getAllCardsByKeyword(page, keyword)
+
+        val pageRequest = if (page.pageSize > Constants.MAX_PAGE_SIZE) {
+            PageRequest.of(page.pageNumber, Constants.MAX_PAGE_SIZE, page.sort)
+        } else {
+            PageRequest.of(page.pageNumber, page.pageSize, page.sort)
+        }
+        val cardPage = cardsService.getAllCardsByKeyword(pageRequest, keyword)
         val response = CardConverter.convertToModel(cardPage.toList())
         return ResponseEntity<List<CardResponse>>(response, HttpStatus.OK)
     }
@@ -67,12 +75,16 @@ class CardsApiController constructor(private val cardsService: CardsService) {
     @Operation(summary = "Find card", description = "TODO ...")
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "OK", content = [
-                Content(schema = Schema(implementation = CardResponse::class))
-            ]),
-            ApiResponse(responseCode = "404", description = "Not Found", content = [
-                Content(schema = Schema(implementation = ErrorResponse::class))
-            ])
+            ApiResponse(
+                responseCode = "200", description = "OK", content = [
+                    Content(schema = Schema(implementation = CardResponse::class))
+                ]
+            ),
+            ApiResponse(
+                responseCode = "404", description = "Not Found", content = [
+                    Content(schema = Schema(implementation = ErrorResponse::class))
+                ]
+            )
         ]
     )
     @ResponseBody
