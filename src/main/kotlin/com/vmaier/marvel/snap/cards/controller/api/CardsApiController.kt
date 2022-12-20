@@ -72,7 +72,7 @@ class CardsApiController constructor(private val cardsService: CardsService) {
     )
     @GetMapping
     fun listCards(@Parameter(hidden = true) page: Pageable, keyword: String?): ResponseEntity<List<CardResponse>> {
-        Validator.checkIfKeywordIsTooLong(keyword)
+        Validator.checkIfKeywordIsValid(keyword)
         val pageRequest = if (page.pageSize > Constants.MAX_PAGE_SIZE) {
             PageRequest.of(page.pageNumber, Constants.MAX_PAGE_SIZE, page.sort)
         } else {
@@ -115,12 +115,26 @@ class CardsApiController constructor(private val cardsService: CardsService) {
     @Operation(summary = "Add new card", description = "TODO ...")
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "201", description = "Created")
+            ApiResponse(
+                responseCode = "201", description = "Created", content = [
+                    Content(schema = Schema(implementation = CardResponse::class))
+                ]
+            ),
+            ApiResponse(
+                responseCode = "400", description = "Bad Request", content = [
+                    Content(schema = Schema(implementation = ErrorResponse::class))
+                ]
+            )
         ]
     )
     @ResponseBody
     @PostMapping(consumes = ["application/json"])
     fun addCard(@RequestBody request: CreateCardRequest): ResponseEntity<CardResponse> {
+        Validator.checkIfNameIsValid(request.name)
+        Validator.checkIfCostIsValid(request.cost)
+        Validator.checkIfPowerIsValid(request.power)
+        Validator.checkIfAbilityIsValid(request.ability)
+        Validator.checkIfImageUrlIsValid(request.imageUrl)
         val newCard = cardsService.addNewCard(request)
         val response = CardConverter.convertToModel(newCard)
         return ResponseEntity<CardResponse>(response, HttpStatus.CREATED)

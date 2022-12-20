@@ -22,6 +22,6 @@ object CardConverter {
     }
 
     fun convertToDao(request: CreateCardRequest): Card {
-        return Card(request.name, request.cost, request.power, request.ability, request.imageUrl)
+        return Card(request.name!!, request.cost!!, request.power!!, request.ability, request.imageUrl!!)
     }
 }
