@@ -6,6 +6,7 @@ import com.vmaier.marvel.snap.cards.openapi.model.CardResponse
 import com.vmaier.marvel.snap.cards.openapi.model.CreateCardRequest
 import com.vmaier.marvel.snap.cards.openapi.model.ErrorResponse
 import com.vmaier.marvel.snap.cards.service.CardsService
+import com.vmaier.marvel.snap.cards.utils.Validator
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.enums.ParameterIn
@@ -29,13 +30,29 @@ class CardsApiController constructor(private val cardsService: CardsService) {
     @Operation(summary = "List all available cards", description = "/openapi/list-cards.md")
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "OK")
+            ApiResponse(
+                responseCode = "200", description = "OK", content = [
+                    Content(array = ArraySchema(schema = Schema(implementation = CardResponse::class)))
+                ]
+            ),
+            ApiResponse(
+                responseCode = "400", description = "Bad Request", content = [
+                    Content(schema = Schema(implementation = ErrorResponse::class))
+                ]
+            )
         ]
     )
     @ResponseBody
     @Parameter(
         `in` = ParameterIn.QUERY,
-        description = "Zero-based page index (0..N)",
+        description = "Search for a keyword in cards (name or ability). "
+                + "Maximum length allowed: `128` characters. ",
+        name = "keyword",
+        schema = Schema(type = "string")
+    )
+    @Parameter(
+        `in` = ParameterIn.QUERY,
+        description = "Zero-based page index `(0..N)`",
         name = "page",
         schema = Schema(type = "integer")
     )
@@ -47,21 +64,15 @@ class CardsApiController constructor(private val cardsService: CardsService) {
     )
     @Parameter(
         `in` = ParameterIn.QUERY,
-        description = "Sorting criteria in the format: property,(asc|desc). "
+        description = "Sorting criteria in the format: `property,(asc|desc)`. "
                 + "Default sort order is ascending. "
                 + "Multiple sort criteria are supported. ",
         name = "sort",
         array = ArraySchema(schema = Schema(type = "string"))
     )
-    @Parameter(
-        `in` = ParameterIn.QUERY,
-        description = "Search for a keyword in cards (name or ability)",
-        name = "keyword",
-        schema = Schema(type = "string")
-    )
     @GetMapping
     fun listCards(@Parameter(hidden = true) page: Pageable, keyword: String?): ResponseEntity<List<CardResponse>> {
-
+        Validator.checkIfKeywordIsTooLong(keyword)
         val pageRequest = if (page.pageSize > Constants.MAX_PAGE_SIZE) {
             PageRequest.of(page.pageNumber, Constants.MAX_PAGE_SIZE, page.sort)
         } else {
