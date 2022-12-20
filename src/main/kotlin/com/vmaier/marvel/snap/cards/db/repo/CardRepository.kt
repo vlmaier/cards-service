@@ -11,13 +11,13 @@ import org.springframework.data.repository.query.Param
 
 interface CardRepository: CrudRepository<Card, Int> {
 
-    fun findAll(pageable: Pageable): Page<Card>
+    fun findAll(pageRequest: Pageable): Page<Card>
 
     @Query("SELECT c FROM Card c WHERE LOWER(c.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(c.ability) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     fun findAllByKeyword(@Param("keyword") keyword: String): Iterable<Card>
 
     @Query("SELECT c FROM Card c WHERE LOWER(c.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(c.ability) LIKE LOWER(CONCAT('%', :keyword, '%'))")
-    fun findAllByKeyword(pageable: Pageable, @Param("keyword") keyword: String): Page<Card>
+    fun findAllByKeyword(pageRequest: Pageable, @Param("keyword") keyword: String): Page<Card>
 
     @Modifying
     @Query("UPDATE Card c SET c.url = :url WHERE c.id = :id")
