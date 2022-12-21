@@ -12,11 +12,18 @@ data class CreateCardRequest(
         description = "Amount of energy cost for playing this card",
         required = true,
         minimum = "0",
-        maximum = "10"
+        maximum = "10",
+        defaultValue = "0"
     )
     val cost: Int?,
 
-    @field:Schema(description = "Amount of power when played", required = true, minimum = "-20", maximum = "20")
+    @field:Schema(
+        description = "Amount of power when played",
+        required = true,
+        minimum = "-20",
+        maximum = "20",
+        defaultValue = "0"
+    )
     val power: Int?,
 
     @field:Schema(
