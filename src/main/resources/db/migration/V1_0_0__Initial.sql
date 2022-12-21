@@ -1,4 +1,5 @@
-CREATE TABLE cards (
+CREATE TABLE cards
+(
     id      SERIAL PRIMARY KEY,
     ability VARCHAR(1024),
     cost    INTEGER NOT NULL,

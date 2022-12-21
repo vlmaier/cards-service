@@ -18,29 +18,29 @@
         <i class="material-icons" style="font-size: 20px; vertical-align: text-bottom;">table_rows</i>
     </a>
     <form class="d-flex" th:action="@{/card-grid?keyword=${keyword}}" th:method="GET">
-        <input th:if="${cost != null}" type="hidden" name="cost" th:value="${cost}"/>
-        <input th:if="${power != null}" type="hidden" name="power" th:value="${power}"/>
+        <input name="cost" th:if="${cost != null}" th:value="${cost}" type="hidden"/>
+        <input name="power" th:if="${power != null}" th:value="${power}" type="hidden"/>
         <input class="ms-1 form-control" placeholder="Search" th:name="keyword" th:value="${keyword}" type="text"/>
         <button class="ms-1 btn btn-primary" type="submit">
             <i class="material-icons" style="font-size: 20px; vertical-align: text-bottom;">search</i>
         </button>
     </form>
     <form class="ms-2 d-inline-flex">
-        <input th:if="${keyword != null}" type="hidden" name="keyword" th:value="${keyword}"/>
+        <input name="keyword" th:if="${keyword != null}" th:value="${keyword}" type="hidden"/>
         <div class="d-flex text-center">
-            <label for="cost" class="me-1 my-auto control-label">Cost:</label>
-            <select class="form-select" name="cost" id="cost">
+            <label class="me-1 my-auto control-label" for="cost">Cost:</label>
+            <select class="form-select" id="cost" name="cost">
                 <option value="">any</option>
-                <option th:each="i : ${costValues}" th:value="${i}" th:text="${i}"
-                        th:selected="${i} == ${cost}"></option>
+                <option th:each="i : ${costValues}" th:selected="${i} == ${cost}" th:text="${i}"
+                        th:value="${i}"></option>
             </select>
         </div>
         <div class="form-group d-flex">
-            <label for="power" class="ms-2 me-1 my-auto control-label">Power:</label>
-            <select class="ms-1 form-select" name="power" id="power">
+            <label class="ms-2 me-1 my-auto control-label" for="power">Power:</label>
+            <select class="ms-1 form-select" id="power" name="power">
                 <option value="">any</option>
-                <option th:each="i : ${powerValues}" th:value="${i}" th:text="${i}"
-                        th:selected="${i} == ${power}"></option>
+                <option th:each="i : ${powerValues}" th:selected="${i} == ${power}" th:text="${i}"
+                        th:value="${i}"></option>
             </select>
         </div>
         <button class="ms-2 btn btn-primary" type="submit">Apply</button>
@@ -54,8 +54,8 @@
     <div class="row my-4 g-0 px-4">
         <div class="card mx-auto mt-4" style="width: 18rem; cursor: pointer" th:each="card: ${cards}">
             <img class="card-img-top"
-                 th:data-id="${card.id}"
-                 onclick="imageClicked(this.getAttribute('data-id'));" th:src="@{${card.url}}"/>
+                 onclick="imageClicked(this.getAttribute('data-id'));"
+                 th:data-id="${card.id}" th:src="@{${card.url}}"/>
             <div class="card-body">
                 <h5 class="card-title" th:text="${card.name}"></h5>
                 <p class="card-text" th:text="${card.ability eq '' ? 'No ability' : card.ability}"></p>

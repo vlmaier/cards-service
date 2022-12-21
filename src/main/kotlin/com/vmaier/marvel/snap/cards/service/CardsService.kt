@@ -19,7 +19,8 @@ import org.springframework.stereotype.Service
 @Transactional
 class CardsService constructor(
     private val cardRepository: CardRepository,
-    private val s3Service: S3Service) {
+    private val s3Service: S3Service
+) {
 
     private val logger = KotlinLogging.logger {}
 
@@ -49,13 +50,13 @@ class CardsService constructor(
             cardRepository.findAllByKeyword(keyword)
         }
         if (cost != null) {
-            cards = cards.filter {
-                card -> card.cost == cost
+            cards = cards.filter { card ->
+                card.cost == cost
             }
         }
         if (power != null) {
-            cards = cards.filter {
-                card -> card.power == power
+            cards = cards.filter { card ->
+                card.power == power
             }
         }
         return cards

@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
 
 
-interface CardRepository: CrudRepository<Card, Int> {
+interface CardRepository : CrudRepository<Card, Int> {
 
     fun findAll(pageRequest: Pageable): Page<Card>
 

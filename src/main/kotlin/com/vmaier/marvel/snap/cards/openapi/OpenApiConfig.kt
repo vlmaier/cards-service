@@ -13,8 +13,10 @@ class OpenApiConfig {
     fun customOpenApi(): OpenAPI {
         return OpenAPI()
             .addServersItem(Server().url("/"))
-            .info(Info()
-                .title("Marvel SNAP Cards API")
-                .description("Overview of all available and documented REST APIs for handling Marvel SNAP cards database.<br>The APIs are grouped by tags. Each tag provides a collection of APIs that are intended for a specific area."))
+            .info(
+                Info()
+                    .title("Marvel SNAP Cards API")
+                    .description("Overview of all available and documented REST APIs for handling Marvel SNAP cards database.<br>The APIs are grouped by tags. Each tag provides a collection of APIs that are intended for a specific area.")
+            )
     }
 }

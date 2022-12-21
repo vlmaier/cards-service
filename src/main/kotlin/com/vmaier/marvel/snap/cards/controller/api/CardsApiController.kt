@@ -11,10 +11,10 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class CardsApiController constructor(private val cardsService: CardsService): CardsApi {
+class CardsApiController constructor(private val cardsService: CardsService) : CardsApi {
 
     override fun listCards(page: Pageable, keyword: String?): ResponseEntity<List<CardResponse>> {
         Validator.checkIfKeywordIsValid(keyword)
