@@ -5,9 +5,9 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema
 data class ErrorResponse(
 
-    @field:Schema
+    @field:Schema(description = "HTTP status code")
     val statusCode: Int,
 
-    @field:Schema
+    @field:Schema(description = "Error message for the client")
     val message: String?
 )
