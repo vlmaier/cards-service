@@ -9,4 +9,4 @@ Manages metadata and images from Marvel SNAP cards
     git clone git@github.com:vlmaier/cards-service.git
     ./gradlew copyJarToDockerDir
     cd docker
-    docker-compose up
+    docker-compose up --build -d
