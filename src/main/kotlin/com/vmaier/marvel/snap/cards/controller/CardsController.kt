@@ -37,14 +37,16 @@ class CardsController constructor(private val cardsService: CardsService) {
         model: Model,
         @RequestParam(value = "keyword", required = false) keyword: String?,
         @RequestParam(value = "cost", required = false) cost: Int?,
-        @RequestParam(value = "power", required = false) power: Int?
+        @RequestParam(value = "power", required = false) power: Int?,
+        @RequestParam(value = "isOwned", required = false) isOwned: Boolean?,
     ): String {
-        val cards = cardsService.getAllCardsByKeyword(keyword, cost, power).sortedBy { card -> card.name }
+        val cards = cardsService.getAllCardsByKeyword(keyword, cost, power, isOwned).sortedBy { card -> card.name }
         val costValues = cards.map { card: Card -> card.cost }.toSet().sorted()
         val powerValues = cards.map { card: Card -> card.power }.toSet().sorted()
         model.addAttribute("keyword", keyword)
         model.addAttribute("cost", cost)
         model.addAttribute("power", power)
+        model.addAttribute("isOwned", isOwned)
         model.addAttribute("costValues", costValues)
         model.addAttribute("powerValues", powerValues)
         model.addAttribute("cards", cards)

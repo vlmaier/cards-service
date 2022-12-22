@@ -20,9 +20,7 @@
         <i class="material-icons" style="font-size: 20px; vertical-align: text-bottom;">grid_view</i>
     </a>
     <form class="d-inline-flex" th:action="@{/cards?keyword=${keyword}}" th:method="GET">
-        <label>
-            <input class="ms-1 form-control" placeholder="Search" th:name="keyword" th:value="${keyword}" type="text"/>
-        </label>
+        <input class="ms-1 form-control" placeholder="Search" th:name="keyword" th:value="${keyword}" type="text"/>
         <button class="ms-1 btn btn-primary" type="submit">
             <i class="material-icons" style="font-size: 20px; vertical-align: text-bottom;">search</i>
         </button>
