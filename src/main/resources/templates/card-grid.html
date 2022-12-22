@@ -84,7 +84,7 @@
                   th:id="'card-' + ${card.id}">check_circle</span>
             <div class="card-body">
                 <h5 class="card-title" th:text="${card.name}"></h5>
-                <p class="card-text" th:text="${card.ability eq '' ? 'No ability' : card.ability}"></p>
+                <p class="card-text" th:utext="${card.ability eq '' ? 'No ability' : card.ability}"></p>
             </div>
         </div>
     </div>
