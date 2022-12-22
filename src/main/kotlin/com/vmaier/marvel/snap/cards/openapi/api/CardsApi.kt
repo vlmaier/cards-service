@@ -117,4 +117,22 @@ interface CardsApi {
     )
     @DeleteMapping
     fun removeCards(): ResponseEntity<Void>
+
+    @Operation(summary = "Add card to collection", description = "TODO ...")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "204", description = "No Content")
+        ]
+    )
+    @PostMapping("{cardId}/collection")
+    fun addToCollection(@PathVariable("cardId") cardId: Int): ResponseEntity<Void>
+
+    @Operation(summary = "Remove card from collection", description = "TODO ...")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "204", description = "No Content")
+        ]
+    )
+    @DeleteMapping("{cardId}/collection")
+    fun removeFromCollection(@PathVariable("cardId") cardId: Int): ResponseEntity<Void>
 }

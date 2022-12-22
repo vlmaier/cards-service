@@ -1,9 +1,10 @@
 CREATE TABLE cards
 (
-    id      SERIAL PRIMARY KEY,
-    ability VARCHAR(1024),
-    cost    INTEGER NOT NULL,
-    name    VARCHAR(255),
-    power   INTEGER NOT NULL,
-    url     VARCHAR(255)
+    id       SERIAL PRIMARY KEY,
+    ability  VARCHAR(1024),
+    cost     INTEGER NOT NULL,
+    name     VARCHAR(255),
+    power    INTEGER NOT NULL,
+    url      VARCHAR(255),
+    is_owned BOOLEAN
 );

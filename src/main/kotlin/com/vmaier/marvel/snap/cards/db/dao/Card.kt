@@ -10,6 +10,7 @@ data class Card(
     val power: Int,
     val ability: String? = null,
     val url: String? = null,
+    val isOwned: Boolean = false,
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int? = null,

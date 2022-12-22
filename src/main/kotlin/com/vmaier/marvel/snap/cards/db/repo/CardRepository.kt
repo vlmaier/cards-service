@@ -22,4 +22,8 @@ interface CardRepository : CrudRepository<Card, Int> {
     @Modifying
     @Query("UPDATE Card c SET c.url = :url WHERE c.id = :id")
     fun updateImageUrl(@Param("id") id: Int, @Param("url") url: String)
+
+    @Modifying
+    @Query("UPDATE Card c SET c.isOwned = :isOwned WHERE c.id = :id")
+    fun updateIsOwned(@Param("id") id: Int, @Param("isOwned") isOwned: Boolean)
 }
