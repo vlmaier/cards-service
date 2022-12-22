@@ -5,6 +5,7 @@ import com.vmaier.marvel.snap.cards.db.dao.Card
 import com.vmaier.marvel.snap.cards.dto.CreateCardDTO
 import com.vmaier.marvel.snap.cards.service.CardsService
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
@@ -25,7 +26,7 @@ class CardsController constructor(private val cardsService: CardsService) {
         if (pageSize > Constants.MAX_PAGE_SIZE) {
             pageSize = Constants.MAX_PAGE_SIZE
         }
-        val cardPage = cardsService.getAllCardsByKeyword(PageRequest.of(currentPage - 1, pageSize), keyword)
+        val cardPage = cardsService.getAllCardsByKeyword(PageRequest.of(currentPage - 1, pageSize, Sort.by("name").ascending()), keyword)
         model.addAttribute("keyword", keyword)
         model.addAttribute("cardPage", cardPage)
         return "cards"
@@ -36,14 +37,16 @@ class CardsController constructor(private val cardsService: CardsService) {
         model: Model,
         @RequestParam(value = "keyword", required = false) keyword: String?,
         @RequestParam(value = "cost", required = false) cost: Int?,
-        @RequestParam(value = "power", required = false) power: Int?
+        @RequestParam(value = "power", required = false) power: Int?,
+        @RequestParam(value = "isOwned", required = false) isOwned: Boolean?,
     ): String {
-        val cards = cardsService.getAllCardsByKeyword(keyword, cost, power)
+        val cards = cardsService.getAllCardsByKeyword(keyword, cost, power, isOwned).sortedBy { card -> card.name }
         val costValues = cards.map { card: Card -> card.cost }.toSet().sorted()
         val powerValues = cards.map { card: Card -> card.power }.toSet().sorted()
         model.addAttribute("keyword", keyword)
         model.addAttribute("cost", cost)
         model.addAttribute("power", power)
+        model.addAttribute("isOwned", isOwned)
         model.addAttribute("costValues", costValues)
         model.addAttribute("powerValues", powerValues)
         model.addAttribute("cards", cards)
@@ -72,6 +75,6 @@ class CardsController constructor(private val cardsService: CardsService) {
     @DeleteMapping("cards")
     fun removeCards(model: Model): String {
         cardsService.removeAllCards()
-        return "redirect:/cards"
+        return "redirect:/card-grid"
     }
 }

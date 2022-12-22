@@ -50,4 +50,16 @@ class CardsApiController constructor(private val cardsService: CardsService) : C
         cardsService.removeAllCards()
         return ResponseEntity(HttpStatus.NO_CONTENT)
     }
+
+    override fun addToCollection(cardId: Int): ResponseEntity<Void> {
+        Validator.checkIfCardIdIsValid(cardId)
+        cardsService.addToCollection(cardId)
+        return ResponseEntity(HttpStatus.NO_CONTENT)
+    }
+
+    override fun removeFromCollection(cardId: Int): ResponseEntity<Void> {
+        Validator.checkIfCardIdIsValid(cardId)
+        cardsService.removeFromCollection(cardId)
+        return ResponseEntity(HttpStatus.NO_CONTENT)
+    }
 }
