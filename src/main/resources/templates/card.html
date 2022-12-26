@@ -8,17 +8,21 @@
 <body>
 <div class="ms-1 container-fluid">
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 d-inline-flex">
             <h1 class="ms-4 my-4" th:text="${card.name}"/>
         </div>
-        <div class="col-4">
+        <div class="col-4" style="text-align: center;">
             <img class="img-fluid" th:src="@{${card.url}}"/>
+            <span class="mt-2 badge" style="font-size: 1.5vw;"
+                  th:classappend="${card.owned ? 'bg-success' : 'bg-secondary'}"
+                  th:text="${card.owned ? 'owned' : 'not owned'}"></span>
+            <form class="mt-3 my-auto" th:action="@{/cards/{cardId}(cardId=${card.id})}" th:method="DELETE">
+                <button class="ms-1 btn btn-danger" type="submit">Delete</button>
+            </form>
         </div>
         <div class="col-8">
-            <div class="mt-4"></div>
-            <h3 class="fw-bold">Cost: <span class="fw-normal" th:text="${card.cost}"></span></h3>
-            <h3 class="fw-bold">Power: <span class="fw-normal" th:text="${card.power}"></span></h3>
-            <h3 class="fw-bold">Ability: <span class="fw-normal" th:text="${card.ability}"></span></h3>
+            <div class="mt-5"></div>
+            <h3 class="mt-3 fw-bold"><span class="fw-normal" th:utext="${card.ability}"></span></h3>
         </div>
     </div>
 </div>

@@ -77,4 +77,10 @@ class CardsController constructor(private val cardsService: CardsService) {
         cardsService.removeAllCards()
         return "redirect:/card-grid"
     }
+
+    @DeleteMapping("cards/{cardId}")
+    fun removeCard(model: Model, @PathVariable("cardId") cardId: Int): String {
+        cardsService.removeAllCard(cardId)
+        return "redirect:/cards$cardId"
+    }
 }

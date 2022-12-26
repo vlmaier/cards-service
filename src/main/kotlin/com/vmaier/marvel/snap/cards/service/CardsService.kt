@@ -87,6 +87,10 @@ class CardsService constructor(
         cardRepository.deleteAll()
     }
 
+    fun removeAllCard(cardId: Int) {
+        cardRepository.deleteById(cardId)
+    }
+
     fun addToCollection(cardId: Int) {
         cardRepository.updateIsOwned(getOneCard(cardId).id!!, true)
     }
