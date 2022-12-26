@@ -20,6 +20,9 @@ data class CardResponse(
     @field:Schema(description = "Description of the ability the character of the card has. Can be empty.")
     val ability: String?,
 
+    @field:Schema(description = "Can be called rarity, the higher the series the rarer the card.")
+    val series: String?,
+
     @field:Schema(description = "Card image URL")
     val imageUrl: String?
 )

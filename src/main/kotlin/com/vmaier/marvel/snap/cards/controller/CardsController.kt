@@ -38,17 +38,21 @@ class CardsController constructor(private val cardsService: CardsService) {
         @RequestParam(value = "keyword", required = false) keyword: String?,
         @RequestParam(value = "cost", required = false) cost: Int?,
         @RequestParam(value = "power", required = false) power: Int?,
+        @RequestParam(value = "series", required = false) series: String?,
         @RequestParam(value = "isOwned", required = false) isOwned: Boolean?,
     ): String {
-        val cards = cardsService.getAllCardsByKeyword(keyword, cost, power, isOwned).sortedBy { card -> card.name }
+        val cards = cardsService.getAllCardsByKeyword(keyword, cost, power, series, isOwned).sortedBy { card -> card.name }
         val costValues = cards.map { card: Card -> card.cost }.toSet().sorted()
         val powerValues = cards.map { card: Card -> card.power }.toSet().sorted()
+        val seriesValues = cards.map { card: Card -> card.series }.toSet().sortedBy { it }
         model.addAttribute("keyword", keyword)
         model.addAttribute("cost", cost)
         model.addAttribute("power", power)
+        model.addAttribute("series", series)
         model.addAttribute("isOwned", isOwned)
         model.addAttribute("costValues", costValues)
         model.addAttribute("powerValues", powerValues)
+        model.addAttribute("seriesValues", seriesValues)
         model.addAttribute("cards", cards)
         return "card-grid"
     }

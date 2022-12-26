@@ -9,6 +9,7 @@ data class Card(
     val cost: Int,
     val power: Int,
     val ability: String? = null,
+    val series: String? = null,
     val url: String? = null,
     val isOwned: Boolean = false,
     @Id

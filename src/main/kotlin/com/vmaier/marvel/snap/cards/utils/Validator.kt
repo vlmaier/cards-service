@@ -63,6 +63,16 @@ object Validator {
         throw ValidationException("ability is too long (max. 1024 characters).")
     }
 
+    fun checkIfSeriesIsValid(series: String?) {
+        if (series.isNullOrEmpty()) {
+            return
+        }
+        if (series.length <= 255) {
+            return
+        }
+        throw ValidationException("series is too long (max. 255 characters).")
+    }
+
     fun checkIfImageUrlIsValid(imageUrl: String?) {
         if (imageUrl.isNullOrEmpty()) {
             throw ValidationException("imageUrl is required and therefore cannot be null or empty.")

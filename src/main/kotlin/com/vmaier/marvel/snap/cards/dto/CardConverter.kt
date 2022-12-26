@@ -8,7 +8,7 @@ import java.util.stream.Collectors
 object CardConverter {
 
     fun convertToModel(card: Card): CardResponse {
-        return CardResponse(card.id!!, card.name, card.cost, card.power, card.ability, card.url)
+        return CardResponse(card.id!!, card.name, card.cost, card.power, card.ability, card.series, card.url)
     }
 
     fun convertToModel(cards: List<Card>): List<CardResponse> {
@@ -18,10 +18,10 @@ object CardConverter {
     }
 
     fun convertToDao(request: CreateCardDTO): Card {
-        return Card(request.name!!, request.cost!!, request.power!!, request.ability!!)
+        return Card(request.name!!, request.cost!!, request.power!!, request.ability!!, request.series!!)
     }
 
     fun convertToDao(request: CreateCardRequest): Card {
-        return Card(request.name!!, request.cost!!, request.power!!, request.ability, request.imageUrl!!)
+        return Card(request.name!!, request.cost!!, request.power!!, request.ability, request.series, request.imageUrl!!)
     }
 }

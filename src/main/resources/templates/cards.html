@@ -39,7 +39,8 @@
             <th class="col-md-1" scope="col">Name</th>
             <th class="col-md-1 text-center" scope="col">Cost</th>
             <th class="col-md-1 text-center" scope="col">Power</th>
-            <th class="col-md-7" scope="col">Ability</th>
+            <th class="col-md-6" scope="col">Ability</th>
+            <th class="col-md-1" scope="col">Series</th>
         </tr>
         </thead>
         <tbody>
@@ -55,6 +56,7 @@
             <td class="text-center" th:text="${card.cost}"/>
             <td class="text-center" th:text="${card.power}"/>
             <td th:utext="${card.ability}"></td>
+            <td class="fw-bold" th:text="${card.series}"></td>
         </tr>
         </tbody>
     </table>

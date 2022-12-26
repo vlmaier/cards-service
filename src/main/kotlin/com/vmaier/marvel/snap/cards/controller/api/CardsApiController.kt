@@ -40,6 +40,7 @@ class CardsApiController constructor(private val cardsService: CardsService) : C
         Validator.checkIfCostIsValid(request.cost)
         Validator.checkIfPowerIsValid(request.power)
         Validator.checkIfAbilityIsValid(request.ability)
+        Validator.checkIfSeriesIsValid(request.series)
         Validator.checkIfImageUrlIsValid(request.imageUrl)
         val newCard = cardsService.addNewCard(request)
         val response = CardConverter.convertToModel(newCard)

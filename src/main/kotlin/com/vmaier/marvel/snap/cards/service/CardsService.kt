@@ -43,7 +43,7 @@ class CardsService constructor(
         return cards
     }
 
-    fun getAllCardsByKeyword(keyword: String?, cost: Int?, power: Int?, isOwned: Boolean?): Iterable<Card> {
+    fun getAllCardsByKeyword(keyword: String?, cost: Int?, power: Int?, series: String?, isOwned: Boolean?): Iterable<Card> {
         var cards = if (keyword.isNullOrEmpty()) {
             cardRepository.findAll()
         } else {
@@ -57,6 +57,11 @@ class CardsService constructor(
         if (power != null) {
             cards = cards.filter { card ->
                 card.power == power
+            }
+        }
+        if (!series.isNullOrEmpty()) {
+            cards = cards.filter { card ->
+                card.series == series
             }
         }
         if (isOwned != null) {

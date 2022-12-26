@@ -12,10 +12,33 @@
             <h1 class="ms-4 my-4" th:text="${card.name}"/>
         </div>
         <div class="col-4" style="text-align: center;">
-            <img class="img-fluid" th:src="@{${card.url}}"/>
-            <span class="mt-2 badge" style="font-size: 1.5vw;"
+            <div class="mt-2 d-inline-flex" th:switch="${card.series}">
+                <span class="badge text-white text-bg-secondary" style="font-size: 1.25vw;"
+                      th:case="'Starter'"
+                      th:text="${card.series}"></span>
+                <span class="badge text-white text-bg-primary" style="font-size: 1.25vw;"
+                      th:case="'Series 1'"
+                      th:text="${card.series}"></span>
+                <span class="badge text-white text-bg-warning" style="font-size: 1.25vw;"
+                      th:case="'Series 2'"
+                      th:text="${card.series}"></span>
+                <span class="badge text-white text-bg-info" style="font-size: 1.25vw;"
+                      th:case="'Series 3'"
+                      th:text="${card.series}"></span>
+                <span class="badge text-white text-bg-success" style="font-size: 1.25vw; background-color: mediumpurple !important;"
+                      th:case="'Series 4'"
+                      th:text="${card.series}"></span>
+                <span class="badge text-white text-bg-danger" style="font-size: 1.25vw;"
+                      th:case="'Series 5'"
+                      th:text="${card.series}"></span>
+                <span class="badge text-white text-bg-dark" style="font-size: 1.25vw;"
+                      th:case="'Season Pass'"
+                      th:text="${card.series}"></span>
+            </div>
+            <span class="mt-2 badge" style="font-size: 1.25vw;"
                   th:classappend="${card.owned ? 'bg-success' : 'bg-secondary'}"
                   th:text="${card.owned ? 'owned' : 'not owned'}"></span>
+            <img class="img-fluid" th:src="@{${card.url}}"/>
             <form class="mt-3 my-auto" th:action="@{/cards/{cardId}(cardId=${card.id})}" th:method="DELETE">
                 <button class="ms-1 btn btn-danger" type="submit">Delete</button>
             </form>

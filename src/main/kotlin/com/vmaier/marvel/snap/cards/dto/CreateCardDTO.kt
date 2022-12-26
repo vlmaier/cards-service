@@ -7,5 +7,6 @@ data class CreateCardDTO(
     val cost: Int? = null,
     val power: Int? = null,
     val ability: String? = null,
+    val series: String? = null,
     val image: MultipartFile? = null
 )

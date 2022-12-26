@@ -33,6 +33,13 @@ data class CreateCardRequest(
     )
     val ability: String?,
 
+    @field:Schema(
+        description = "Can be called rarity, the higher the series the rarer the card.",
+        nullable = true,
+        maxLength = 255
+    )
+    val series: String?,
+
     @field:Schema(description = "Card image URL", required = true, maxLength = 255)
     val imageUrl: String?
 )
