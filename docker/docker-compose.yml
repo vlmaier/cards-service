@@ -2,7 +2,7 @@ version: '2'
 
 services:
   cards-service:
-    image: 'cards-service:latest'
+    image: 'vlmaier/cards-service:latest'
     build:
       context: .
     container_name: cards-service
