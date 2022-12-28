@@ -3,8 +3,6 @@ version: '2'
 services:
   cards-service:
     image: 'vlmaier/cards-service:latest'
-    build:
-      context: .
     container_name: cards-service
     depends_on:
       - db
