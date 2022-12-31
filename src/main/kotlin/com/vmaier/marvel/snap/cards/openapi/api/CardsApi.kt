@@ -1,5 +1,6 @@
 package com.vmaier.marvel.snap.cards.openapi.api
 
+import com.vmaier.marvel.snap.cards.openapi.model.CardListResponse
 import com.vmaier.marvel.snap.cards.openapi.model.CardResponse
 import com.vmaier.marvel.snap.cards.openapi.model.CreateCardRequest
 import com.vmaier.marvel.snap.cards.openapi.model.ErrorResponse
@@ -25,7 +26,7 @@ interface CardsApi {
         value = [
             ApiResponse(
                 responseCode = "200", description = "OK", content = [
-                    Content(array = ArraySchema(schema = Schema(implementation = CardResponse::class)))
+                    Content(schema = Schema(implementation = CardListResponse::class))
                 ]
             ),
             ApiResponse(
@@ -64,7 +65,7 @@ interface CardsApi {
         array = ArraySchema(schema = Schema(type = "string"))
     )
     @GetMapping
-    fun listCards(@Parameter(hidden = true) page: Pageable, keyword: String?): ResponseEntity<List<CardResponse>>
+    fun listCards(@Parameter(hidden = true) page: Pageable, keyword: String?): ResponseEntity<CardListResponse>
 
     @Operation(summary = "Find card", description = "TODO ...")
     @ApiResponses(
