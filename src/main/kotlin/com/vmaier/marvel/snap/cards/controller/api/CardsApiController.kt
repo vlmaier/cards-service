@@ -3,6 +3,7 @@ package com.vmaier.marvel.snap.cards.controller.api
 import com.vmaier.marvel.snap.cards.Constants
 import com.vmaier.marvel.snap.cards.dto.CardConverter
 import com.vmaier.marvel.snap.cards.openapi.api.CardsApi
+import com.vmaier.marvel.snap.cards.openapi.model.CardListResponse
 import com.vmaier.marvel.snap.cards.openapi.model.CardResponse
 import com.vmaier.marvel.snap.cards.openapi.model.CreateCardRequest
 import com.vmaier.marvel.snap.cards.service.CardsService
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class CardsApiController constructor(private val cardsService: CardsService) : CardsApi {
 
-    override fun listCards(page: Pageable, keyword: String?): ResponseEntity<List<CardResponse>> {
+    override fun listCards(page: Pageable, keyword: String?): ResponseEntity<CardListResponse> {
         Validator.checkIfKeywordIsValid(keyword)
         val pageRequest = if (page.pageSize > Constants.MAX_PAGE_SIZE) {
             PageRequest.of(page.pageNumber, Constants.MAX_PAGE_SIZE, page.sort)
@@ -24,8 +25,9 @@ class CardsApiController constructor(private val cardsService: CardsService) : C
             PageRequest.of(page.pageNumber, page.pageSize, page.sort)
         }
         val cardPage = cardsService.getAllCardsByKeyword(pageRequest, keyword)
-        val response = CardConverter.convertToModel(cardPage.toList())
-        return ResponseEntity<List<CardResponse>>(response, HttpStatus.OK)
+        val cards = CardConverter.convertToModel(cardPage.toList())
+        val response = CardListResponse(cardPage.totalElements.toInt(), cards)
+        return ResponseEntity<CardListResponse>(response, HttpStatus.OK)
     }
 
     override fun findCard(cardId: Int): ResponseEntity<CardResponse> {
