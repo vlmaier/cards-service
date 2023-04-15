@@ -1,5 +1,4 @@
 name: Java CI with Gradle
-run-name: ${{ github.actor }} pushed new code 🚀
 on: [push]
 jobs:
   build:
