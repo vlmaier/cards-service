@@ -35,7 +35,7 @@ dependencies {
     implementation("com.amazonaws:aws-java-sdk-s3")
     implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359")
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
-    implementation("org.flywaydb:flyway-core:9.21.1")
+    implementation("org.flywaydb:flyway-core:9.22.2")
     runtimeOnly("org.postgresql:postgresql")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
