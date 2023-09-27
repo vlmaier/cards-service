@@ -31,7 +31,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.0")
     implementation("org.springdoc:springdoc-openapi-starter-common:2.0.0")
-    implementation(platform("com.amazonaws:aws-java-sdk-bom:1.12.526"))
+    implementation(platform("com.amazonaws:aws-java-sdk-bom:1.12.558"))
     implementation("com.amazonaws:aws-java-sdk-s3")
     implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359")
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
